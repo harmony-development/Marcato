@@ -1,28 +1,20 @@
 import Fluent
 import Vapor
 
-struct Server: MediaProxyServiceServer {
-
+class MarcatoServer {
+    let authKitV1 = AuthKitV1()
+    let chatKitV1 = ChatKitV1()
+    let mediaProxyV1 = MediaProxyV1()
+    let syncV1 = SyncV1()
+    let voiceKitV1 = VoiceKitV1()
 }
 
-func routes(_ app: Application) throws {
-    app.get { req in
-        return "It works!"
-    }
+func routes(_ app: Application) {
+    let server = MarcatoServer()
 
-    app.get("hello") { req -> String in
-        return "Hello, world!"
-    }
-
-    app.post("route") { req -> String in
-        ""
-    }
-
-    app.webSocket("foo") { req, ws in
-        ws.onBinary { ws, bb in
-            ws.send([UInt8](bb.allData()))
-        }
-    }
-
-    try app.register(collection: TodoController())
+    server.authKitV1.registerRoutes(withBuilder: app)
+    server.chatKitV1.registerRoutes(withBuilder: app)
+    server.mediaProxyV1.registerRoutes(withBuilder: app)
+    server.syncV1.registerRoutes(withBuilder: app)
+    server.voiceKitV1.registerRoutes(withBuilder: app)
 }
