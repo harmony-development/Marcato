@@ -20,465 +20,21 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-enum Protocol_Harmonytypes_V1_UserStatus: SwiftProtobuf.Enum {
-  typealias RawValue = Int
-  case onlineUnspecified // = 0
-  case streaming // = 1
-  case doNotDisturb // = 2
-  case idle // = 3
-  case offline // = 4
-  case UNRECOGNIZED(Int)
-
-  init() {
-    self = .onlineUnspecified
-  }
-
-  init?(rawValue: Int) {
-    switch rawValue {
-    case 0: self = .onlineUnspecified
-    case 1: self = .streaming
-    case 2: self = .doNotDisturb
-    case 3: self = .idle
-    case 4: self = .offline
-    default: self = .UNRECOGNIZED(rawValue)
-    }
-  }
-
-  var rawValue: Int {
-    switch self {
-    case .onlineUnspecified: return 0
-    case .streaming: return 1
-    case .doNotDisturb: return 2
-    case .idle: return 3
-    case .offline: return 4
-    case .UNRECOGNIZED(let i): return i
-    }
-  }
-
-}
-
-#if swift(>=4.2)
-
-extension Protocol_Harmonytypes_V1_UserStatus: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static var allCases: [Protocol_Harmonytypes_V1_UserStatus] = [
-    .onlineUnspecified,
-    .streaming,
-    .doNotDisturb,
-    .idle,
-    .offline,
-  ]
-}
-
-#endif  // swift(>=4.2)
-
+/// Metadata for methods. These are set in individual RPC endpoints and are
+/// typically used by servers.
 struct Protocol_Harmonytypes_V1_HarmonyMethodMetadata {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// whether the method requires authentication.
   var requiresAuthentication: Bool = false
 
+  /// whether the method allows federation or not.
   var requiresLocal: Bool = false
 
+  /// the permission nodes required to invoke the method.
   var requiresPermissionNode: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-/// OVERRIDES
-struct Protocol_Harmonytypes_V1_Override {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var name: String = String()
-
-  var avatar: String = String()
-
-  var reason: Protocol_Harmonytypes_V1_Override.OneOf_Reason? = nil
-
-  var userDefined: String {
-    get {
-      if case .userDefined(let v)? = reason {return v}
-      return String()
-    }
-    set {reason = .userDefined(newValue)}
-  }
-
-  var webhook: SwiftProtobuf.Google_Protobuf_Empty {
-    get {
-      if case .webhook(let v)? = reason {return v}
-      return SwiftProtobuf.Google_Protobuf_Empty()
-    }
-    set {reason = .webhook(newValue)}
-  }
-
-  /// plurality, not system as in computer
-  var systemPlurality: SwiftProtobuf.Google_Protobuf_Empty {
-    get {
-      if case .systemPlurality(let v)? = reason {return v}
-      return SwiftProtobuf.Google_Protobuf_Empty()
-    }
-    set {reason = .systemPlurality(newValue)}
-  }
-
-  var systemMessage: SwiftProtobuf.Google_Protobuf_Empty {
-    get {
-      if case .systemMessage(let v)? = reason {return v}
-      return SwiftProtobuf.Google_Protobuf_Empty()
-    }
-    set {reason = .systemMessage(newValue)}
-  }
-
-  var bridge: SwiftProtobuf.Google_Protobuf_Empty {
-    get {
-      if case .bridge(let v)? = reason {return v}
-      return SwiftProtobuf.Google_Protobuf_Empty()
-    }
-    set {reason = .bridge(newValue)}
-  }
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  enum OneOf_Reason: Equatable {
-    case userDefined(String)
-    case webhook(SwiftProtobuf.Google_Protobuf_Empty)
-    /// plurality, not system as in computer
-    case systemPlurality(SwiftProtobuf.Google_Protobuf_Empty)
-    case systemMessage(SwiftProtobuf.Google_Protobuf_Empty)
-    case bridge(SwiftProtobuf.Google_Protobuf_Empty)
-
-  #if !swift(>=4.1)
-    static func ==(lhs: Protocol_Harmonytypes_V1_Override.OneOf_Reason, rhs: Protocol_Harmonytypes_V1_Override.OneOf_Reason) -> Bool {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch (lhs, rhs) {
-      case (.userDefined, .userDefined): return {
-        guard case .userDefined(let l) = lhs, case .userDefined(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.webhook, .webhook): return {
-        guard case .webhook(let l) = lhs, case .webhook(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.systemPlurality, .systemPlurality): return {
-        guard case .systemPlurality(let l) = lhs, case .systemPlurality(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.systemMessage, .systemMessage): return {
-        guard case .systemMessage(let l) = lhs, case .systemMessage(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.bridge, .bridge): return {
-        guard case .bridge(let l) = lhs, case .bridge(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      default: return false
-      }
-    }
-  #endif
-  }
-
-  init() {}
-}
-
-struct Protocol_Harmonytypes_V1_Action {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var actionType: Protocol_Harmonytypes_V1_Action.TypeEnum = .normal
-
-  var id: String = String()
-
-  var kind: Protocol_Harmonytypes_V1_Action.OneOf_Kind? = nil
-
-  var button: Protocol_Harmonytypes_V1_Action.Button {
-    get {
-      if case .button(let v)? = kind {return v}
-      return Protocol_Harmonytypes_V1_Action.Button()
-    }
-    set {kind = .button(newValue)}
-  }
-
-  var dropdown: Protocol_Harmonytypes_V1_Action.Dropdown {
-    get {
-      if case .dropdown(let v)? = kind {return v}
-      return Protocol_Harmonytypes_V1_Action.Dropdown()
-    }
-    set {kind = .dropdown(newValue)}
-  }
-
-  var input: Protocol_Harmonytypes_V1_Action.Input {
-    get {
-      if case .input(let v)? = kind {return v}
-      return Protocol_Harmonytypes_V1_Action.Input()
-    }
-    set {kind = .input(newValue)}
-  }
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  enum OneOf_Kind: Equatable {
-    case button(Protocol_Harmonytypes_V1_Action.Button)
-    case dropdown(Protocol_Harmonytypes_V1_Action.Dropdown)
-    case input(Protocol_Harmonytypes_V1_Action.Input)
-
-  #if !swift(>=4.1)
-    static func ==(lhs: Protocol_Harmonytypes_V1_Action.OneOf_Kind, rhs: Protocol_Harmonytypes_V1_Action.OneOf_Kind) -> Bool {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch (lhs, rhs) {
-      case (.button, .button): return {
-        guard case .button(let l) = lhs, case .button(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.dropdown, .dropdown): return {
-        guard case .dropdown(let l) = lhs, case .dropdown(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.input, .input): return {
-        guard case .input(let l) = lhs, case .input(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      default: return false
-      }
-    }
-  #endif
-  }
-
-  enum TypeEnum: SwiftProtobuf.Enum {
-    typealias RawValue = Int
-    case normal // = 0
-    case primary // = 1
-    case destructive // = 2
-    case UNRECOGNIZED(Int)
-
-    init() {
-      self = .normal
-    }
-
-    init?(rawValue: Int) {
-      switch rawValue {
-      case 0: self = .normal
-      case 1: self = .primary
-      case 2: self = .destructive
-      default: self = .UNRECOGNIZED(rawValue)
-      }
-    }
-
-    var rawValue: Int {
-      switch self {
-      case .normal: return 0
-      case .primary: return 1
-      case .destructive: return 2
-      case .UNRECOGNIZED(let i): return i
-      }
-    }
-
-  }
-
-  struct Button {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var text: String = String()
-
-    var url: String = String()
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
-  struct Dropdown {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var text: String = String()
-
-    var options: [String] = []
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
-  struct Input {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var label: String = String()
-
-    var wide: Bool = false
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
-  init() {}
-}
-
-#if swift(>=4.2)
-
-extension Protocol_Harmonytypes_V1_Action.TypeEnum: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static var allCases: [Protocol_Harmonytypes_V1_Action.TypeEnum] = [
-    .normal,
-    .primary,
-    .destructive,
-  ]
-}
-
-#endif  // swift(>=4.2)
-
-struct Protocol_Harmonytypes_V1_EmbedHeading {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var text: String = String()
-
-  var subtext: String = String()
-
-  var url: String = String()
-
-  var icon: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Harmonytypes_V1_EmbedField {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var title: String = String()
-
-  var subtitle: String = String()
-
-  var body: String = String()
-
-  var imageURL: String = String()
-
-  var presentation: Protocol_Harmonytypes_V1_EmbedField.Presentation = .data
-
-  var actions: [Protocol_Harmonytypes_V1_Action] = []
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  enum Presentation: SwiftProtobuf.Enum {
-    typealias RawValue = Int
-    case data // = 0
-    case captionedImage // = 1
-    case row // = 2
-    case UNRECOGNIZED(Int)
-
-    init() {
-      self = .data
-    }
-
-    init?(rawValue: Int) {
-      switch rawValue {
-      case 0: self = .data
-      case 1: self = .captionedImage
-      case 2: self = .row
-      default: self = .UNRECOGNIZED(rawValue)
-      }
-    }
-
-    var rawValue: Int {
-      switch self {
-      case .data: return 0
-      case .captionedImage: return 1
-      case .row: return 2
-      case .UNRECOGNIZED(let i): return i
-      }
-    }
-
-  }
-
-  init() {}
-}
-
-#if swift(>=4.2)
-
-extension Protocol_Harmonytypes_V1_EmbedField.Presentation: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static var allCases: [Protocol_Harmonytypes_V1_EmbedField.Presentation] = [
-    .data,
-    .captionedImage,
-    .row,
-  ]
-}
-
-#endif  // swift(>=4.2)
-
-struct Protocol_Harmonytypes_V1_Embed {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var title: String = String()
-
-  var body: String = String()
-
-  var color: Int64 = 0
-
-  var header: Protocol_Harmonytypes_V1_EmbedHeading {
-    get {return _header ?? Protocol_Harmonytypes_V1_EmbedHeading()}
-    set {_header = newValue}
-  }
-  /// Returns true if `header` has been explicitly set.
-  var hasHeader: Bool {return self._header != nil}
-  /// Clears the value of `header`. Subsequent reads from it will return its default value.
-  mutating func clearHeader() {self._header = nil}
-
-  var footer: Protocol_Harmonytypes_V1_EmbedHeading {
-    get {return _footer ?? Protocol_Harmonytypes_V1_EmbedHeading()}
-    set {_footer = newValue}
-  }
-  /// Returns true if `footer` has been explicitly set.
-  var hasFooter: Bool {return self._footer != nil}
-  /// Clears the value of `footer`. Subsequent reads from it will return its default value.
-  mutating func clearFooter() {self._footer = nil}
-
-  var fields: [Protocol_Harmonytypes_V1_EmbedField] = []
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _header: Protocol_Harmonytypes_V1_EmbedHeading? = nil
-  fileprivate var _footer: Protocol_Harmonytypes_V1_EmbedHeading? = nil
-}
-
-/// TYPES
-struct Protocol_Harmonytypes_V1_Attachment {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var id: String = String()
-
-  var name: String = String()
-
-  var type: String = String()
-
-  var size: Int32 = 0
-
-  var caption: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -499,198 +55,6 @@ struct Protocol_Harmonytypes_V1_Metadata {
   init() {}
 }
 
-struct Protocol_Harmonytypes_V1_ContentText {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var content: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Harmonytypes_V1_ContentEmbed {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var embeds: Protocol_Harmonytypes_V1_Embed {
-    get {return _embeds ?? Protocol_Harmonytypes_V1_Embed()}
-    set {_embeds = newValue}
-  }
-  /// Returns true if `embeds` has been explicitly set.
-  var hasEmbeds: Bool {return self._embeds != nil}
-  /// Clears the value of `embeds`. Subsequent reads from it will return its default value.
-  mutating func clearEmbeds() {self._embeds = nil}
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _embeds: Protocol_Harmonytypes_V1_Embed? = nil
-}
-
-struct Protocol_Harmonytypes_V1_ContentFiles {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var attachments: [Protocol_Harmonytypes_V1_Attachment] = []
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Harmonytypes_V1_Content {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var content: Protocol_Harmonytypes_V1_Content.OneOf_Content? = nil
-
-  var textMessage: Protocol_Harmonytypes_V1_ContentText {
-    get {
-      if case .textMessage(let v)? = content {return v}
-      return Protocol_Harmonytypes_V1_ContentText()
-    }
-    set {content = .textMessage(newValue)}
-  }
-
-  var embedMessage: Protocol_Harmonytypes_V1_ContentEmbed {
-    get {
-      if case .embedMessage(let v)? = content {return v}
-      return Protocol_Harmonytypes_V1_ContentEmbed()
-    }
-    set {content = .embedMessage(newValue)}
-  }
-
-  var filesMessage: Protocol_Harmonytypes_V1_ContentFiles {
-    get {
-      if case .filesMessage(let v)? = content {return v}
-      return Protocol_Harmonytypes_V1_ContentFiles()
-    }
-    set {content = .filesMessage(newValue)}
-  }
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  enum OneOf_Content: Equatable {
-    case textMessage(Protocol_Harmonytypes_V1_ContentText)
-    case embedMessage(Protocol_Harmonytypes_V1_ContentEmbed)
-    case filesMessage(Protocol_Harmonytypes_V1_ContentFiles)
-
-  #if !swift(>=4.1)
-    static func ==(lhs: Protocol_Harmonytypes_V1_Content.OneOf_Content, rhs: Protocol_Harmonytypes_V1_Content.OneOf_Content) -> Bool {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch (lhs, rhs) {
-      case (.textMessage, .textMessage): return {
-        guard case .textMessage(let l) = lhs, case .textMessage(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.embedMessage, .embedMessage): return {
-        guard case .embedMessage(let l) = lhs, case .embedMessage(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.filesMessage, .filesMessage): return {
-        guard case .filesMessage(let l) = lhs, case .filesMessage(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      default: return false
-      }
-    }
-  #endif
-  }
-
-  init() {}
-}
-
-struct Protocol_Harmonytypes_V1_Message {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var metadata: Protocol_Harmonytypes_V1_Metadata {
-    get {return _storage._metadata ?? Protocol_Harmonytypes_V1_Metadata()}
-    set {_uniqueStorage()._metadata = newValue}
-  }
-  /// Returns true if `metadata` has been explicitly set.
-  var hasMetadata: Bool {return _storage._metadata != nil}
-  /// Clears the value of `metadata`. Subsequent reads from it will return its default value.
-  mutating func clearMetadata() {_uniqueStorage()._metadata = nil}
-
-  var overrides: Protocol_Harmonytypes_V1_Override {
-    get {return _storage._overrides ?? Protocol_Harmonytypes_V1_Override()}
-    set {_uniqueStorage()._overrides = newValue}
-  }
-  /// Returns true if `overrides` has been explicitly set.
-  var hasOverrides: Bool {return _storage._overrides != nil}
-  /// Clears the value of `overrides`. Subsequent reads from it will return its default value.
-  mutating func clearOverrides() {_uniqueStorage()._overrides = nil}
-
-  var guildID: UInt64 {
-    get {return _storage._guildID}
-    set {_uniqueStorage()._guildID = newValue}
-  }
-
-  var channelID: UInt64 {
-    get {return _storage._channelID}
-    set {_uniqueStorage()._channelID = newValue}
-  }
-
-  var messageID: UInt64 {
-    get {return _storage._messageID}
-    set {_uniqueStorage()._messageID = newValue}
-  }
-
-  var authorID: UInt64 {
-    get {return _storage._authorID}
-    set {_uniqueStorage()._authorID = newValue}
-  }
-
-  var createdAt: SwiftProtobuf.Google_Protobuf_Timestamp {
-    get {return _storage._createdAt ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
-    set {_uniqueStorage()._createdAt = newValue}
-  }
-  /// Returns true if `createdAt` has been explicitly set.
-  var hasCreatedAt: Bool {return _storage._createdAt != nil}
-  /// Clears the value of `createdAt`. Subsequent reads from it will return its default value.
-  mutating func clearCreatedAt() {_uniqueStorage()._createdAt = nil}
-
-  var editedAt: SwiftProtobuf.Google_Protobuf_Timestamp {
-    get {return _storage._editedAt ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
-    set {_uniqueStorage()._editedAt = newValue}
-  }
-  /// Returns true if `editedAt` has been explicitly set.
-  var hasEditedAt: Bool {return _storage._editedAt != nil}
-  /// Clears the value of `editedAt`. Subsequent reads from it will return its default value.
-  mutating func clearEditedAt() {_uniqueStorage()._editedAt = nil}
-
-  var inReplyTo: UInt64 {
-    get {return _storage._inReplyTo}
-    set {_uniqueStorage()._inReplyTo = newValue}
-  }
-
-  var content: Protocol_Harmonytypes_V1_Content {
-    get {return _storage._content ?? Protocol_Harmonytypes_V1_Content()}
-    set {_uniqueStorage()._content = newValue}
-  }
-  /// Returns true if `content` has been explicitly set.
-  var hasContent: Bool {return _storage._content != nil}
-  /// Clears the value of `content`. Subsequent reads from it will return its default value.
-  mutating func clearContent() {_uniqueStorage()._content = nil}
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _storage = _StorageClass.defaultInstance
-}
-
 struct Protocol_Harmonytypes_V1_Error {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -703,6 +67,136 @@ struct Protocol_Harmonytypes_V1_Error {
   var moreDetails: Data = Data()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Token that will be used for authentication.
+struct Protocol_Harmonytypes_V1_Token {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Ed25519 signature of the following serialized protobuf data, signed
+  /// with a private key. Which private key used to sign will be described
+  /// in the documentation.
+  ///
+  /// Has to be 64 bytes long, otherwise it will be rejected.
+  var sig: Data = Data()
+
+  /// Serialized protobuf data.
+  /// The protobuf type of this serialized data is dependent on the API endpoint
+  /// used.
+  var data: Data = Data()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// An object representing an item position between two other items.
+struct Protocol_Harmonytypes_V1_ItemPosition {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var position: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position? = nil
+
+  var top: Protocol_Harmonytypes_V1_ItemPosition.Top {
+    get {
+      if case .top(let v)? = position {return v}
+      return Protocol_Harmonytypes_V1_ItemPosition.Top()
+    }
+    set {position = .top(newValue)}
+  }
+
+  var between: Protocol_Harmonytypes_V1_ItemPosition.Between {
+    get {
+      if case .between(let v)? = position {return v}
+      return Protocol_Harmonytypes_V1_ItemPosition.Between()
+    }
+    set {position = .between(newValue)}
+  }
+
+  var bottom: Protocol_Harmonytypes_V1_ItemPosition.Bottom {
+    get {
+      if case .bottom(let v)? = position {return v}
+      return Protocol_Harmonytypes_V1_ItemPosition.Bottom()
+    }
+    set {position = .bottom(newValue)}
+  }
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum OneOf_Position: Equatable {
+    case top(Protocol_Harmonytypes_V1_ItemPosition.Top)
+    case between(Protocol_Harmonytypes_V1_ItemPosition.Between)
+    case bottom(Protocol_Harmonytypes_V1_ItemPosition.Bottom)
+
+  #if !swift(>=4.1)
+    static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position, rhs: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position) -> Bool {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch (lhs, rhs) {
+      case (.top, .top): return {
+        guard case .top(let l) = lhs, case .top(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.between, .between): return {
+        guard case .between(let l) = lhs, case .between(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.bottom, .bottom): return {
+        guard case .bottom(let l) = lhs, case .bottom(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      default: return false
+      }
+    }
+  #endif
+  }
+
+  /// An object that represents the top of an ordered list.
+  struct Top {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var nextID: UInt64 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  /// An object that represents a place between two items in an ordered list.
+  struct Between {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var previousID: UInt64 = 0
+
+    var nextID: UInt64 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  /// An object that represents the bottom of an ordered list.
+  struct Bottom {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var previousID: UInt64 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
 
   init() {}
 }
@@ -758,16 +252,6 @@ let Protocol_Harmonytypes_V1_Extensions_metadata = SwiftProtobuf.MessageExtensio
 
 fileprivate let _protobuf_package = "protocol.harmonytypes.v1"
 
-extension Protocol_Harmonytypes_V1_UserStatus: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "USER_STATUS_ONLINE_UNSPECIFIED"),
-    1: .same(proto: "USER_STATUS_STREAMING"),
-    2: .same(proto: "USER_STATUS_DO_NOT_DISTURB"),
-    3: .same(proto: "USER_STATUS_IDLE"),
-    4: .same(proto: "USER_STATUS_OFFLINE"),
-  ]
-}
-
 extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".HarmonyMethodMetadata"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -812,595 +296,6 @@ extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message,
   }
 }
 
-extension Protocol_Harmonytypes_V1_Override: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Override"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "name"),
-    2: .same(proto: "avatar"),
-    3: .standard(proto: "user_defined"),
-    4: .same(proto: "webhook"),
-    5: .standard(proto: "system_plurality"),
-    6: .standard(proto: "system_message"),
-    7: .same(proto: "bridge"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.avatar) }()
-      case 3: try {
-        var v: String?
-        try decoder.decodeSingularStringField(value: &v)
-        if let v = v {
-          if self.reason != nil {try decoder.handleConflictingOneOf()}
-          self.reason = .userDefined(v)
-        }
-      }()
-      case 4: try {
-        var v: SwiftProtobuf.Google_Protobuf_Empty?
-        var hadOneofValue = false
-        if let current = self.reason {
-          hadOneofValue = true
-          if case .webhook(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.reason = .webhook(v)
-        }
-      }()
-      case 5: try {
-        var v: SwiftProtobuf.Google_Protobuf_Empty?
-        var hadOneofValue = false
-        if let current = self.reason {
-          hadOneofValue = true
-          if case .systemPlurality(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.reason = .systemPlurality(v)
-        }
-      }()
-      case 6: try {
-        var v: SwiftProtobuf.Google_Protobuf_Empty?
-        var hadOneofValue = false
-        if let current = self.reason {
-          hadOneofValue = true
-          if case .systemMessage(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.reason = .systemMessage(v)
-        }
-      }()
-      case 7: try {
-        var v: SwiftProtobuf.Google_Protobuf_Empty?
-        var hadOneofValue = false
-        if let current = self.reason {
-          hadOneofValue = true
-          if case .bridge(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.reason = .bridge(v)
-        }
-      }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
-    }
-    if !self.avatar.isEmpty {
-      try visitor.visitSingularStringField(value: self.avatar, fieldNumber: 2)
-    }
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every case branch when no optimizations are
-    // enabled. https://github.com/apple/swift-protobuf/issues/1034
-    switch self.reason {
-    case .userDefined?: try {
-      guard case .userDefined(let v)? = self.reason else { preconditionFailure() }
-      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
-    }()
-    case .webhook?: try {
-      guard case .webhook(let v)? = self.reason else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }()
-    case .systemPlurality?: try {
-      guard case .systemPlurality(let v)? = self.reason else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }()
-    case .systemMessage?: try {
-      guard case .systemMessage(let v)? = self.reason else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-    }()
-    case .bridge?: try {
-      guard case .bridge(let v)? = self.reason else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-    }()
-    case nil: break
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Override, rhs: Protocol_Harmonytypes_V1_Override) -> Bool {
-    if lhs.name != rhs.name {return false}
-    if lhs.avatar != rhs.avatar {return false}
-    if lhs.reason != rhs.reason {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Action: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Action"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "action_type"),
-    2: .same(proto: "id"),
-    3: .same(proto: "button"),
-    4: .same(proto: "dropdown"),
-    5: .same(proto: "input"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularEnumField(value: &self.actionType) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 3: try {
-        var v: Protocol_Harmonytypes_V1_Action.Button?
-        var hadOneofValue = false
-        if let current = self.kind {
-          hadOneofValue = true
-          if case .button(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.kind = .button(v)
-        }
-      }()
-      case 4: try {
-        var v: Protocol_Harmonytypes_V1_Action.Dropdown?
-        var hadOneofValue = false
-        if let current = self.kind {
-          hadOneofValue = true
-          if case .dropdown(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.kind = .dropdown(v)
-        }
-      }()
-      case 5: try {
-        var v: Protocol_Harmonytypes_V1_Action.Input?
-        var hadOneofValue = false
-        if let current = self.kind {
-          hadOneofValue = true
-          if case .input(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.kind = .input(v)
-        }
-      }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.actionType != .normal {
-      try visitor.visitSingularEnumField(value: self.actionType, fieldNumber: 1)
-    }
-    if !self.id.isEmpty {
-      try visitor.visitSingularStringField(value: self.id, fieldNumber: 2)
-    }
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every case branch when no optimizations are
-    // enabled. https://github.com/apple/swift-protobuf/issues/1034
-    switch self.kind {
-    case .button?: try {
-      guard case .button(let v)? = self.kind else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }()
-    case .dropdown?: try {
-      guard case .dropdown(let v)? = self.kind else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }()
-    case .input?: try {
-      guard case .input(let v)? = self.kind else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }()
-    case nil: break
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Action, rhs: Protocol_Harmonytypes_V1_Action) -> Bool {
-    if lhs.actionType != rhs.actionType {return false}
-    if lhs.id != rhs.id {return false}
-    if lhs.kind != rhs.kind {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Action.TypeEnum: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "Normal"),
-    1: .same(proto: "Primary"),
-    2: .same(proto: "Destructive"),
-  ]
-}
-
-extension Protocol_Harmonytypes_V1_Action.Button: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_Action.protoMessageName + ".Button"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "text"),
-    2: .same(proto: "url"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.url) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.text.isEmpty {
-      try visitor.visitSingularStringField(value: self.text, fieldNumber: 1)
-    }
-    if !self.url.isEmpty {
-      try visitor.visitSingularStringField(value: self.url, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Action.Button, rhs: Protocol_Harmonytypes_V1_Action.Button) -> Bool {
-    if lhs.text != rhs.text {return false}
-    if lhs.url != rhs.url {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Action.Dropdown: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_Action.protoMessageName + ".Dropdown"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "text"),
-    2: .same(proto: "options"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
-      case 2: try { try decoder.decodeRepeatedStringField(value: &self.options) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.text.isEmpty {
-      try visitor.visitSingularStringField(value: self.text, fieldNumber: 1)
-    }
-    if !self.options.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.options, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Action.Dropdown, rhs: Protocol_Harmonytypes_V1_Action.Dropdown) -> Bool {
-    if lhs.text != rhs.text {return false}
-    if lhs.options != rhs.options {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Action.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_Action.protoMessageName + ".Input"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "label"),
-    2: .same(proto: "wide"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.label) }()
-      case 2: try { try decoder.decodeSingularBoolField(value: &self.wide) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.label.isEmpty {
-      try visitor.visitSingularStringField(value: self.label, fieldNumber: 1)
-    }
-    if self.wide != false {
-      try visitor.visitSingularBoolField(value: self.wide, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Action.Input, rhs: Protocol_Harmonytypes_V1_Action.Input) -> Bool {
-    if lhs.label != rhs.label {return false}
-    if lhs.wide != rhs.wide {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_EmbedHeading: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".EmbedHeading"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "text"),
-    2: .same(proto: "subtext"),
-    3: .same(proto: "url"),
-    4: .same(proto: "icon"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.subtext) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.url) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.icon) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.text.isEmpty {
-      try visitor.visitSingularStringField(value: self.text, fieldNumber: 1)
-    }
-    if !self.subtext.isEmpty {
-      try visitor.visitSingularStringField(value: self.subtext, fieldNumber: 2)
-    }
-    if !self.url.isEmpty {
-      try visitor.visitSingularStringField(value: self.url, fieldNumber: 3)
-    }
-    if !self.icon.isEmpty {
-      try visitor.visitSingularStringField(value: self.icon, fieldNumber: 4)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_EmbedHeading, rhs: Protocol_Harmonytypes_V1_EmbedHeading) -> Bool {
-    if lhs.text != rhs.text {return false}
-    if lhs.subtext != rhs.subtext {return false}
-    if lhs.url != rhs.url {return false}
-    if lhs.icon != rhs.icon {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_EmbedField: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".EmbedField"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "title"),
-    2: .same(proto: "subtitle"),
-    3: .same(proto: "body"),
-    4: .standard(proto: "image_url"),
-    5: .same(proto: "presentation"),
-    6: .same(proto: "actions"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.title) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.subtitle) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.body) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.imageURL) }()
-      case 5: try { try decoder.decodeSingularEnumField(value: &self.presentation) }()
-      case 6: try { try decoder.decodeRepeatedMessageField(value: &self.actions) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.title.isEmpty {
-      try visitor.visitSingularStringField(value: self.title, fieldNumber: 1)
-    }
-    if !self.subtitle.isEmpty {
-      try visitor.visitSingularStringField(value: self.subtitle, fieldNumber: 2)
-    }
-    if !self.body.isEmpty {
-      try visitor.visitSingularStringField(value: self.body, fieldNumber: 3)
-    }
-    if !self.imageURL.isEmpty {
-      try visitor.visitSingularStringField(value: self.imageURL, fieldNumber: 4)
-    }
-    if self.presentation != .data {
-      try visitor.visitSingularEnumField(value: self.presentation, fieldNumber: 5)
-    }
-    if !self.actions.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.actions, fieldNumber: 6)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_EmbedField, rhs: Protocol_Harmonytypes_V1_EmbedField) -> Bool {
-    if lhs.title != rhs.title {return false}
-    if lhs.subtitle != rhs.subtitle {return false}
-    if lhs.body != rhs.body {return false}
-    if lhs.imageURL != rhs.imageURL {return false}
-    if lhs.presentation != rhs.presentation {return false}
-    if lhs.actions != rhs.actions {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_EmbedField.Presentation: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "Data"),
-    1: .same(proto: "CaptionedImage"),
-    2: .same(proto: "Row"),
-  ]
-}
-
-extension Protocol_Harmonytypes_V1_Embed: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Embed"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "title"),
-    2: .same(proto: "body"),
-    3: .same(proto: "color"),
-    4: .same(proto: "header"),
-    5: .same(proto: "footer"),
-    6: .same(proto: "fields"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.title) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.body) }()
-      case 3: try { try decoder.decodeSingularInt64Field(value: &self.color) }()
-      case 4: try { try decoder.decodeSingularMessageField(value: &self._header) }()
-      case 5: try { try decoder.decodeSingularMessageField(value: &self._footer) }()
-      case 6: try { try decoder.decodeRepeatedMessageField(value: &self.fields) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.title.isEmpty {
-      try visitor.visitSingularStringField(value: self.title, fieldNumber: 1)
-    }
-    if !self.body.isEmpty {
-      try visitor.visitSingularStringField(value: self.body, fieldNumber: 2)
-    }
-    if self.color != 0 {
-      try visitor.visitSingularInt64Field(value: self.color, fieldNumber: 3)
-    }
-    if let v = self._header {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }
-    if let v = self._footer {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }
-    if !self.fields.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.fields, fieldNumber: 6)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Embed, rhs: Protocol_Harmonytypes_V1_Embed) -> Bool {
-    if lhs.title != rhs.title {return false}
-    if lhs.body != rhs.body {return false}
-    if lhs.color != rhs.color {return false}
-    if lhs._header != rhs._header {return false}
-    if lhs._footer != rhs._footer {return false}
-    if lhs.fields != rhs.fields {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Attachment: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Attachment"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "id"),
-    2: .same(proto: "name"),
-    3: .same(proto: "type"),
-    4: .same(proto: "size"),
-    5: .same(proto: "caption"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.type) }()
-      case 4: try { try decoder.decodeSingularInt32Field(value: &self.size) }()
-      case 5: try { try decoder.decodeSingularStringField(value: &self.caption) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.id.isEmpty {
-      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
-    }
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 2)
-    }
-    if !self.type.isEmpty {
-      try visitor.visitSingularStringField(value: self.type, fieldNumber: 3)
-    }
-    if self.size != 0 {
-      try visitor.visitSingularInt32Field(value: self.size, fieldNumber: 4)
-    }
-    if !self.caption.isEmpty {
-      try visitor.visitSingularStringField(value: self.caption, fieldNumber: 5)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Attachment, rhs: Protocol_Harmonytypes_V1_Attachment) -> Bool {
-    if lhs.id != rhs.id {return false}
-    if lhs.name != rhs.name {return false}
-    if lhs.type != rhs.type {return false}
-    if lhs.size != rhs.size {return false}
-    if lhs.caption != rhs.caption {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
 extension Protocol_Harmonytypes_V1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Metadata"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1434,325 +329,6 @@ extension Protocol_Harmonytypes_V1_Metadata: SwiftProtobuf.Message, SwiftProtobu
   static func ==(lhs: Protocol_Harmonytypes_V1_Metadata, rhs: Protocol_Harmonytypes_V1_Metadata) -> Bool {
     if lhs.kind != rhs.kind {return false}
     if lhs.`extension` != rhs.`extension` {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_ContentText: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".ContentText"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "content"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.content) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.content.isEmpty {
-      try visitor.visitSingularStringField(value: self.content, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ContentText, rhs: Protocol_Harmonytypes_V1_ContentText) -> Bool {
-    if lhs.content != rhs.content {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_ContentEmbed: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".ContentEmbed"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "embeds"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._embeds) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._embeds {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ContentEmbed, rhs: Protocol_Harmonytypes_V1_ContentEmbed) -> Bool {
-    if lhs._embeds != rhs._embeds {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_ContentFiles: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".ContentFiles"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "attachments"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.attachments) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.attachments.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.attachments, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ContentFiles, rhs: Protocol_Harmonytypes_V1_ContentFiles) -> Bool {
-    if lhs.attachments != rhs.attachments {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Content: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Content"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    2: .standard(proto: "text_message"),
-    4: .standard(proto: "embed_message"),
-    5: .standard(proto: "files_message"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 2: try {
-        var v: Protocol_Harmonytypes_V1_ContentText?
-        var hadOneofValue = false
-        if let current = self.content {
-          hadOneofValue = true
-          if case .textMessage(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.content = .textMessage(v)
-        }
-      }()
-      case 4: try {
-        var v: Protocol_Harmonytypes_V1_ContentEmbed?
-        var hadOneofValue = false
-        if let current = self.content {
-          hadOneofValue = true
-          if case .embedMessage(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.content = .embedMessage(v)
-        }
-      }()
-      case 5: try {
-        var v: Protocol_Harmonytypes_V1_ContentFiles?
-        var hadOneofValue = false
-        if let current = self.content {
-          hadOneofValue = true
-          if case .filesMessage(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.content = .filesMessage(v)
-        }
-      }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every case branch when no optimizations are
-    // enabled. https://github.com/apple/swift-protobuf/issues/1034
-    switch self.content {
-    case .textMessage?: try {
-      guard case .textMessage(let v)? = self.content else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }()
-    case .embedMessage?: try {
-      guard case .embedMessage(let v)? = self.content else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }()
-    case .filesMessage?: try {
-      guard case .filesMessage(let v)? = self.content else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }()
-    case nil: break
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Content, rhs: Protocol_Harmonytypes_V1_Content) -> Bool {
-    if lhs.content != rhs.content {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_Message: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Message"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "metadata"),
-    2: .same(proto: "overrides"),
-    3: .standard(proto: "guild_id"),
-    4: .standard(proto: "channel_id"),
-    5: .standard(proto: "message_id"),
-    6: .standard(proto: "author_id"),
-    7: .standard(proto: "created_at"),
-    8: .standard(proto: "edited_at"),
-    9: .standard(proto: "in_reply_to"),
-    10: .same(proto: "content"),
-  ]
-
-  fileprivate class _StorageClass {
-    var _metadata: Protocol_Harmonytypes_V1_Metadata? = nil
-    var _overrides: Protocol_Harmonytypes_V1_Override? = nil
-    var _guildID: UInt64 = 0
-    var _channelID: UInt64 = 0
-    var _messageID: UInt64 = 0
-    var _authorID: UInt64 = 0
-    var _createdAt: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
-    var _editedAt: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
-    var _inReplyTo: UInt64 = 0
-    var _content: Protocol_Harmonytypes_V1_Content? = nil
-
-    static let defaultInstance = _StorageClass()
-
-    private init() {}
-
-    init(copying source: _StorageClass) {
-      _metadata = source._metadata
-      _overrides = source._overrides
-      _guildID = source._guildID
-      _channelID = source._channelID
-      _messageID = source._messageID
-      _authorID = source._authorID
-      _createdAt = source._createdAt
-      _editedAt = source._editedAt
-      _inReplyTo = source._inReplyTo
-      _content = source._content
-    }
-  }
-
-  fileprivate mutating func _uniqueStorage() -> _StorageClass {
-    if !isKnownUniquelyReferenced(&_storage) {
-      _storage = _StorageClass(copying: _storage)
-    }
-    return _storage
-  }
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    _ = _uniqueStorage()
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      while let fieldNumber = try decoder.nextFieldNumber() {
-        // The use of inline closures is to circumvent an issue where the compiler
-        // allocates stack space for every case branch when no optimizations are
-        // enabled. https://github.com/apple/swift-protobuf/issues/1034
-        switch fieldNumber {
-        case 1: try { try decoder.decodeSingularMessageField(value: &_storage._metadata) }()
-        case 2: try { try decoder.decodeSingularMessageField(value: &_storage._overrides) }()
-        case 3: try { try decoder.decodeSingularUInt64Field(value: &_storage._guildID) }()
-        case 4: try { try decoder.decodeSingularUInt64Field(value: &_storage._channelID) }()
-        case 5: try { try decoder.decodeSingularUInt64Field(value: &_storage._messageID) }()
-        case 6: try { try decoder.decodeSingularUInt64Field(value: &_storage._authorID) }()
-        case 7: try { try decoder.decodeSingularMessageField(value: &_storage._createdAt) }()
-        case 8: try { try decoder.decodeSingularMessageField(value: &_storage._editedAt) }()
-        case 9: try { try decoder.decodeSingularUInt64Field(value: &_storage._inReplyTo) }()
-        case 10: try { try decoder.decodeSingularMessageField(value: &_storage._content) }()
-        default: break
-        }
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if let v = _storage._metadata {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-      }
-      if let v = _storage._overrides {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-      }
-      if _storage._guildID != 0 {
-        try visitor.visitSingularUInt64Field(value: _storage._guildID, fieldNumber: 3)
-      }
-      if _storage._channelID != 0 {
-        try visitor.visitSingularUInt64Field(value: _storage._channelID, fieldNumber: 4)
-      }
-      if _storage._messageID != 0 {
-        try visitor.visitSingularUInt64Field(value: _storage._messageID, fieldNumber: 5)
-      }
-      if _storage._authorID != 0 {
-        try visitor.visitSingularUInt64Field(value: _storage._authorID, fieldNumber: 6)
-      }
-      if let v = _storage._createdAt {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-      }
-      if let v = _storage._editedAt {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
-      }
-      if _storage._inReplyTo != 0 {
-        try visitor.visitSingularUInt64Field(value: _storage._inReplyTo, fieldNumber: 9)
-      }
-      if let v = _storage._content {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
-      }
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_Message, rhs: Protocol_Harmonytypes_V1_Message) -> Bool {
-    if lhs._storage !== rhs._storage {
-      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
-        let _storage = _args.0
-        let rhs_storage = _args.1
-        if _storage._metadata != rhs_storage._metadata {return false}
-        if _storage._overrides != rhs_storage._overrides {return false}
-        if _storage._guildID != rhs_storage._guildID {return false}
-        if _storage._channelID != rhs_storage._channelID {return false}
-        if _storage._messageID != rhs_storage._messageID {return false}
-        if _storage._authorID != rhs_storage._authorID {return false}
-        if _storage._createdAt != rhs_storage._createdAt {return false}
-        if _storage._editedAt != rhs_storage._editedAt {return false}
-        if _storage._inReplyTo != rhs_storage._inReplyTo {return false}
-        if _storage._content != rhs_storage._content {return false}
-        return true
-      }
-      if !storagesAreEqual {return false}
-    }
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1797,6 +373,233 @@ extension Protocol_Harmonytypes_V1_Error: SwiftProtobuf.Message, SwiftProtobuf._
     if lhs.identifier != rhs.identifier {return false}
     if lhs.humanMessage != rhs.humanMessage {return false}
     if lhs.moreDetails != rhs.moreDetails {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Token"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "sig"),
+    2: .same(proto: "data"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBytesField(value: &self.sig) }()
+      case 2: try { try decoder.decodeSingularBytesField(value: &self.data) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.sig.isEmpty {
+      try visitor.visitSingularBytesField(value: self.sig, fieldNumber: 1)
+    }
+    if !self.data.isEmpty {
+      try visitor.visitSingularBytesField(value: self.data, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_Token, rhs: Protocol_Harmonytypes_V1_Token) -> Bool {
+    if lhs.sig != rhs.sig {return false}
+    if lhs.data != rhs.data {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_ItemPosition: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ItemPosition"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "top"),
+    2: .same(proto: "between"),
+    3: .same(proto: "bottom"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try {
+        var v: Protocol_Harmonytypes_V1_ItemPosition.Top?
+        var hadOneofValue = false
+        if let current = self.position {
+          hadOneofValue = true
+          if case .top(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.position = .top(v)
+        }
+      }()
+      case 2: try {
+        var v: Protocol_Harmonytypes_V1_ItemPosition.Between?
+        var hadOneofValue = false
+        if let current = self.position {
+          hadOneofValue = true
+          if case .between(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.position = .between(v)
+        }
+      }()
+      case 3: try {
+        var v: Protocol_Harmonytypes_V1_ItemPosition.Bottom?
+        var hadOneofValue = false
+        if let current = self.position {
+          hadOneofValue = true
+          if case .bottom(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.position = .bottom(v)
+        }
+      }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every case branch when no optimizations are
+    // enabled. https://github.com/apple/swift-protobuf/issues/1034
+    switch self.position {
+    case .top?: try {
+      guard case .top(let v)? = self.position else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    }()
+    case .between?: try {
+      guard case .between(let v)? = self.position else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    }()
+    case .bottom?: try {
+      guard case .bottom(let v)? = self.position else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    }()
+    case nil: break
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition, rhs: Protocol_Harmonytypes_V1_ItemPosition) -> Bool {
+    if lhs.position != rhs.position {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_ItemPosition.Top: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Top"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "next_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.nextID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.nextID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.nextID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Top, rhs: Protocol_Harmonytypes_V1_ItemPosition.Top) -> Bool {
+    if lhs.nextID != rhs.nextID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_ItemPosition.Between: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Between"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "previous_id"),
+    2: .standard(proto: "next_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.previousID) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.nextID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.previousID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.previousID, fieldNumber: 1)
+    }
+    if self.nextID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.nextID, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Between, rhs: Protocol_Harmonytypes_V1_ItemPosition.Between) -> Bool {
+    if lhs.previousID != rhs.previousID {return false}
+    if lhs.nextID != rhs.nextID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_ItemPosition.Bottom: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Bottom"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "previous_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.previousID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.previousID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.previousID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Bottom, rhs: Protocol_Harmonytypes_V1_ItemPosition.Bottom) -> Bool {
+    if lhs.previousID != rhs.previousID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

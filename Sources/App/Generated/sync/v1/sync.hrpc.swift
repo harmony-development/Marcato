@@ -2,27 +2,20 @@ import Vapor
 import SwiftProtobuf
 import Foundation
 protocol PostboxServiceServer {
-	func Pull (req: Request, out: (Protocol_Sync_V1_Syn) -> Void) -> (Protocol_Sync_V1_Ack) -> Void
+	func Pull (req: Request, in: Google_Protobuf_Empty) throws -> Protocol_Sync_V1_EventQueue
 	func Push (req: Request, in: Protocol_Sync_V1_Event) throws -> Google_Protobuf_Empty
 }
 extension PostboxServiceServer {
-	func Pull (req: Request, out: (Protocol_Sync_V1_Syn) -> Void) -> (Protocol_Sync_V1_Ack) -> Void { return { _ in } }
+	func Pull (req: Request, in: Google_Protobuf_Empty) throws -> Protocol_Sync_V1_EventQueue { throw Abort(.internalServerError, reason: "unimplemented") }
 	func Push (req: Request, in: Protocol_Sync_V1_Event) throws -> Google_Protobuf_Empty { throw Abort(.internalServerError, reason: "unimplemented") }
 	func registerRoutes(withBuilder builder: RoutesBuilder) {
-		builder.webSocket("/protocol.sync.v1.PostboxService/Pull") { request, ws in
-			let callback = self.Pull(req: request) { message in
-				do {
-					ws.send([UInt8](try message.serializedData()))
-				} catch {
-					_ = ws.close()
-				}
-			}
-			ws.onBinary { ws, bb in
-				do {
-					try callback(Protocol_Sync_V1_Ack(serializedData: bb.allData()))
-				} catch {
-					_ = ws.close()
-				}
+		builder.post("/protocol.sync.v1.PostboxService/Pull") { request -> Response in
+			do {
+				let message: Google_Protobuf_Empty = try request.decodeMessage()
+				let response = try self.Pull(req: request, in: message)
+				return try response.toResponse(on: request)
+			} catch {
+			throw Abort(.internalServerError, reason: "something did an oops")
 			}
 		}
 		builder.post("/protocol.sync.v1.PostboxService/Push") { request -> Response in

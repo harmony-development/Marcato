@@ -20,11 +20,27 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+/// Used in `BeginAuth` endpoint.
+struct Protocol_Auth_V1_BeginAuthRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// BeginAuthResponse
+/// The return type of BeginAuth, containing the
+/// auth_id that will be used for the authentication
+/// section
 struct Protocol_Auth_V1_BeginAuthResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// auth_id: the ID of this auth session
   var authID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -32,13 +48,19 @@ struct Protocol_Auth_V1_BeginAuthResponse {
   init() {}
 }
 
+/// Session
+/// Session contains the information for a new session;
+/// the user_id you logged in as and the session_token
+/// which should be passed to authorisation
 struct Protocol_Auth_V1_Session {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// user_id: the ID of the user you logged in as
   var userID: UInt64 = 0
 
+  /// session_token: the session token to use in authorization
   var sessionToken: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -56,12 +78,17 @@ struct Protocol_Auth_V1_AuthStep {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// fallback_url: unused
   var fallbackURL: String = String()
 
+  /// can_go_back: whether or not the client can request the
+  /// server to send the previous step
   var canGoBack: Bool = false
 
+  /// step: the current step
   var step: Protocol_Auth_V1_AuthStep.OneOf_Step? = nil
 
+  /// choice: the user must pick a thing out of a list of options
   var choice: Protocol_Auth_V1_AuthStep.Choice {
     get {
       if case .choice(let v)? = step {return v}
@@ -70,6 +97,7 @@ struct Protocol_Auth_V1_AuthStep {
     set {step = .choice(newValue)}
   }
 
+  /// form: the user must complete a form
   var form: Protocol_Auth_V1_AuthStep.Form {
     get {
       if case .form(let v)? = step {return v}
@@ -78,6 +106,7 @@ struct Protocol_Auth_V1_AuthStep {
     set {step = .form(newValue)}
   }
 
+  /// session: you've completed auth, and have a session
   var session: Protocol_Auth_V1_Session {
     get {
       if case .session(let v)? = step {return v}
@@ -86,6 +115,7 @@ struct Protocol_Auth_V1_AuthStep {
     set {step = .session(newValue)}
   }
 
+  /// waiting: you're waiting on something
   var waiting: Protocol_Auth_V1_AuthStep.Waiting {
     get {
       if case .waiting(let v)? = step {return v}
@@ -96,10 +126,15 @@ struct Protocol_Auth_V1_AuthStep {
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
+  /// step: the current step
   enum OneOf_Step: Equatable {
+    /// choice: the user must pick a thing out of a list of options
     case choice(Protocol_Auth_V1_AuthStep.Choice)
+    /// form: the user must complete a form
     case form(Protocol_Auth_V1_AuthStep.Form)
+    /// session: you've completed auth, and have a session
     case session(Protocol_Auth_V1_Session)
+    /// waiting: you're waiting on something
     case waiting(Protocol_Auth_V1_AuthStep.Waiting)
 
   #if !swift(>=4.1)
@@ -138,8 +173,11 @@ struct Protocol_Auth_V1_AuthStep {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// title: the title of the list of choices
     var title: String = String()
 
+    /// options: a list of choices, one of these
+    /// should be sent in nextstep
     var options: [String] = []
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -155,8 +193,10 @@ struct Protocol_Auth_V1_AuthStep {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// title: the title of this form
     var title: String = String()
 
+    /// fields: all the fields in this form
     var fields: [Protocol_Auth_V1_AuthStep.Form.FormField] = []
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -175,8 +215,10 @@ struct Protocol_Auth_V1_AuthStep {
       // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
       // methods supported on all messages.
 
+      /// name: the identifier for the form field
       var name: String = String()
 
+      /// type: the type of the form field, as documented above
       var type: String = String()
 
       var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -196,8 +238,10 @@ struct Protocol_Auth_V1_AuthStep {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// title: the title of this waiting screen
     var title: String = String()
 
+    /// description: the explanation of what's being waited on
     var description_p: String = String()
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -217,10 +261,14 @@ struct Protocol_Auth_V1_NextStepRequest {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// auth_id: the authentication session you want
+  /// the next step of
   var authID: String = String()
 
+  /// step: the user's response to a step
   var step: Protocol_Auth_V1_NextStepRequest.OneOf_Step? = nil
 
+  /// choice: the choice the user picked
   var choice: Protocol_Auth_V1_NextStepRequest.Choice {
     get {
       if case .choice(let v)? = step {return v}
@@ -229,6 +277,7 @@ struct Protocol_Auth_V1_NextStepRequest {
     set {step = .choice(newValue)}
   }
 
+  /// form: the form the user filled out
   var form: Protocol_Auth_V1_NextStepRequest.Form {
     get {
       if case .form(let v)? = step {return v}
@@ -239,8 +288,11 @@ struct Protocol_Auth_V1_NextStepRequest {
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
+  /// step: the user's response to a step
   enum OneOf_Step: Equatable {
+    /// choice: the choice the user picked
     case choice(Protocol_Auth_V1_NextStepRequest.Choice)
+    /// form: the form the user filled out
     case form(Protocol_Auth_V1_NextStepRequest.Form)
 
   #if !swift(>=4.1)
@@ -269,6 +321,7 @@ struct Protocol_Auth_V1_NextStepRequest {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// choice: the choice the user picked
     var choice: String = String()
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -282,8 +335,10 @@ struct Protocol_Auth_V1_NextStepRequest {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// field: the data for a form field
     var field: Protocol_Auth_V1_NextStepRequest.FormFields.OneOf_Field? = nil
 
+    /// bytes: the form field's data is a byte array
     var bytes: Data {
       get {
         if case .bytes(let v)? = field {return v}
@@ -292,6 +347,7 @@ struct Protocol_Auth_V1_NextStepRequest {
       set {field = .bytes(newValue)}
     }
 
+    /// string: the form field's data is a string
     var string: String {
       get {
         if case .string(let v)? = field {return v}
@@ -300,6 +356,7 @@ struct Protocol_Auth_V1_NextStepRequest {
       set {field = .string(newValue)}
     }
 
+    /// number: the form field's data is a number
     var number: Int64 {
       get {
         if case .number(let v)? = field {return v}
@@ -310,9 +367,13 @@ struct Protocol_Auth_V1_NextStepRequest {
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
+    /// field: the data for a form field
     enum OneOf_Field: Equatable {
+      /// bytes: the form field's data is a byte array
       case bytes(Data)
+      /// string: the form field's data is a string
       case string(String)
+      /// number: the form field's data is a number
       case number(Int64)
 
     #if !swift(>=4.1)
@@ -348,6 +409,7 @@ struct Protocol_Auth_V1_NextStepRequest {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    /// fields: the fields the user filled out
     var fields: [Protocol_Auth_V1_NextStepRequest.FormFields] = []
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -358,6 +420,29 @@ struct Protocol_Auth_V1_NextStepRequest {
   init() {}
 }
 
+/// Used in `NextStep` endpoint.
+struct Protocol_Auth_V1_NextStepResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// step: the next step in the authentication process
+  var step: Protocol_Auth_V1_AuthStep {
+    get {return _step ?? Protocol_Auth_V1_AuthStep()}
+    set {_step = newValue}
+  }
+  /// Returns true if `step` has been explicitly set.
+  var hasStep: Bool {return self._step != nil}
+  /// Clears the value of `step`. Subsequent reads from it will return its default value.
+  mutating func clearStep() {self._step = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _step: Protocol_Auth_V1_AuthStep? = nil
+}
+
 /// StepBackRequest
 /// A request to go back 1 step
 struct Protocol_Auth_V1_StepBackRequest {
@@ -365,11 +450,36 @@ struct Protocol_Auth_V1_StepBackRequest {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// auth_id: the authentication session the user
+  /// wants to go back in
   var authID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+}
+
+/// Used in `StepBack` endpoint.
+struct Protocol_Auth_V1_StepBackResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// step: the previous step in the authentication process
+  var step: Protocol_Auth_V1_AuthStep {
+    get {return _step ?? Protocol_Auth_V1_AuthStep()}
+    set {_step = newValue}
+  }
+  /// Returns true if `step` has been explicitly set.
+  var hasStep: Bool {return self._step != nil}
+  /// Clears the value of `step`. Subsequent reads from it will return its default value.
+  mutating func clearStep() {self._step = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _step: Protocol_Auth_V1_AuthStep? = nil
 }
 
 /// StreamStepsRequest
@@ -380,6 +490,8 @@ struct Protocol_Auth_V1_StreamStepsRequest {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// auth_id: the authorization session
+  /// who's steps you want to stream
   var authID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -387,12 +499,37 @@ struct Protocol_Auth_V1_StreamStepsRequest {
   init() {}
 }
 
-/// Connection
+/// Used in `StreamSteps` endpoint.
+struct Protocol_Auth_V1_StreamStepsResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// step: the next step in the authentication process
+  var step: Protocol_Auth_V1_AuthStep {
+    get {return _step ?? Protocol_Auth_V1_AuthStep()}
+    set {_step = newValue}
+  }
+  /// Returns true if `step` has been explicitly set.
+  var hasStep: Bool {return self._step != nil}
+  /// Clears the value of `step`. Subsequent reads from it will return its default value.
+  mutating func clearStep() {self._step = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _step: Protocol_Auth_V1_AuthStep? = nil
+}
+
+/// The request to federate with a foreign server.
 struct Protocol_Auth_V1_FederateRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// target: the foreign server you want to
+  /// federate with
   var target: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -400,40 +537,148 @@ struct Protocol_Auth_V1_FederateRequest {
   init() {}
 }
 
-struct Protocol_Auth_V1_FederateReply {
+/// The reply to a successful federation request,
+/// containing the token you need to present to the
+/// foreign server.
+struct Protocol_Auth_V1_FederateResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var token: String = String()
+  /// A `harmonytypes.v1.Token` whose `data` field is a serialized `TokenData` message.
+  /// It is signed with the homeserver's private key.
+  var token: Protocol_Harmonytypes_V1_Token {
+    get {return _token ?? Protocol_Harmonytypes_V1_Token()}
+    set {_token = newValue}
+  }
+  /// Returns true if `token` has been explicitly set.
+  var hasToken: Bool {return self._token != nil}
+  /// Clears the value of `token`. Subsequent reads from it will return its default value.
+  mutating func clearToken() {self._token = nil}
 
-  var nonce: String = String()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _token: Protocol_Harmonytypes_V1_Token? = nil
+}
+
+/// Used in `Key` endpoint.
+struct Protocol_Auth_V1_KeyRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
-struct Protocol_Auth_V1_KeyReply {
+/// Contains a key's bytes.
+struct Protocol_Auth_V1_KeyResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var key: String = String()
+  /// key: the bytes of the public key.
+  var key: Data = Data()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+/// Log into a foreignserver using a token
+/// from your homeserver, obtained through a FederateRequest
 struct Protocol_Auth_V1_LoginFederatedRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var authToken: String = String()
+  /// A `harmonytypes.v1.Token` whose `data` field is a serialized `TokenData` message.
+  /// It is signed with the homeserver's private key.
+  var authToken: Protocol_Harmonytypes_V1_Token {
+    get {return _authToken ?? Protocol_Harmonytypes_V1_Token()}
+    set {_authToken = newValue}
+  }
+  /// Returns true if `authToken` has been explicitly set.
+  var hasAuthToken: Bool {return self._authToken != nil}
+  /// Clears the value of `authToken`. Subsequent reads from it will return its default value.
+  mutating func clearAuthToken() {self._authToken = nil}
 
+  /// domain: the homeserver that the auth token is from
   var domain: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _authToken: Protocol_Harmonytypes_V1_Token? = nil
+}
+
+/// Used in `LoginFederated` endpoint.
+struct Protocol_Auth_V1_LoginFederatedResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The user's session.
+  var session: Protocol_Auth_V1_Session {
+    get {return _session ?? Protocol_Auth_V1_Session()}
+    set {_session = newValue}
+  }
+  /// Returns true if `session` has been explicitly set.
+  var hasSession: Bool {return self._session != nil}
+  /// Clears the value of `session`. Subsequent reads from it will return its default value.
+  mutating func clearSession() {self._session = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _session: Protocol_Auth_V1_Session? = nil
+}
+
+/// Information sent by a client's homeserver, in a `harmonytypes.v1.Token`.
+/// It will be sent to a foreignserver by the client.
+struct Protocol_Auth_V1_TokenData {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The client's user ID on the homeserver.
+  var userID: UInt64 = 0
+
+  /// The foreignserver's server name.
+  var target: String = String()
+
+  /// The username of the client.
+  var username: String = String()
+
+  /// The avatar of the client.
+  var avatar: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in `CheckLoggedIn` endpoint.
+struct Protocol_Auth_V1_CheckLoggedInRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in `CheckLoggedIn` endpoint.
+struct Protocol_Auth_V1_CheckLoggedInResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -443,6 +688,25 @@ struct Protocol_Auth_V1_LoginFederatedRequest {
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "protocol.auth.v1"
+
+extension Protocol_Auth_V1_BeginAuthRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".BeginAuthRequest"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_BeginAuthRequest, rhs: Protocol_Auth_V1_BeginAuthRequest) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
 
 extension Protocol_Auth_V1_BeginAuthResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".BeginAuthResponse"
@@ -994,6 +1258,38 @@ extension Protocol_Auth_V1_NextStepRequest.Form: SwiftProtobuf.Message, SwiftPro
   }
 }
 
+extension Protocol_Auth_V1_NextStepResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".NextStepResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "step"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._step) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._step {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_NextStepResponse, rhs: Protocol_Auth_V1_NextStepResponse) -> Bool {
+    if lhs._step != rhs._step {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Protocol_Auth_V1_StepBackRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".StepBackRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1021,6 +1317,38 @@ extension Protocol_Auth_V1_StepBackRequest: SwiftProtobuf.Message, SwiftProtobuf
 
   static func ==(lhs: Protocol_Auth_V1_StepBackRequest, rhs: Protocol_Auth_V1_StepBackRequest) -> Bool {
     if lhs.authID != rhs.authID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_StepBackResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".StepBackResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "step"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._step) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._step {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_StepBackResponse, rhs: Protocol_Auth_V1_StepBackResponse) -> Bool {
+    if lhs._step != rhs._step {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1058,6 +1386,38 @@ extension Protocol_Auth_V1_StreamStepsRequest: SwiftProtobuf.Message, SwiftProto
   }
 }
 
+extension Protocol_Auth_V1_StreamStepsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".StreamStepsResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "step"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._step) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._step {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_StreamStepsResponse, rhs: Protocol_Auth_V1_StreamStepsResponse) -> Bool {
+    if lhs._step != rhs._step {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Protocol_Auth_V1_FederateRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".FederateRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1090,11 +1450,10 @@ extension Protocol_Auth_V1_FederateRequest: SwiftProtobuf.Message, SwiftProtobuf
   }
 }
 
-extension Protocol_Auth_V1_FederateReply: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".FederateReply"
+extension Protocol_Auth_V1_FederateResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".FederateResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "token"),
-    2: .same(proto: "nonce"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1103,33 +1462,47 @@ extension Protocol_Auth_V1_FederateReply: SwiftProtobuf.Message, SwiftProtobuf._
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.token) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.nonce) }()
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._token) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.token.isEmpty {
-      try visitor.visitSingularStringField(value: self.token, fieldNumber: 1)
-    }
-    if !self.nonce.isEmpty {
-      try visitor.visitSingularStringField(value: self.nonce, fieldNumber: 2)
+    if let v = self._token {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Protocol_Auth_V1_FederateReply, rhs: Protocol_Auth_V1_FederateReply) -> Bool {
-    if lhs.token != rhs.token {return false}
-    if lhs.nonce != rhs.nonce {return false}
+  static func ==(lhs: Protocol_Auth_V1_FederateResponse, rhs: Protocol_Auth_V1_FederateResponse) -> Bool {
+    if lhs._token != rhs._token {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Protocol_Auth_V1_KeyReply: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".KeyReply"
+extension Protocol_Auth_V1_KeyRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".KeyRequest"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_KeyRequest, rhs: Protocol_Auth_V1_KeyRequest) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_KeyResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".KeyResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "key"),
   ]
@@ -1140,7 +1513,7 @@ extension Protocol_Auth_V1_KeyReply: SwiftProtobuf.Message, SwiftProtobuf._Messa
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.key) }()
+      case 1: try { try decoder.decodeSingularBytesField(value: &self.key) }()
       default: break
       }
     }
@@ -1148,12 +1521,12 @@ extension Protocol_Auth_V1_KeyReply: SwiftProtobuf.Message, SwiftProtobuf._Messa
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.key.isEmpty {
-      try visitor.visitSingularStringField(value: self.key, fieldNumber: 1)
+      try visitor.visitSingularBytesField(value: self.key, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Protocol_Auth_V1_KeyReply, rhs: Protocol_Auth_V1_KeyReply) -> Bool {
+  static func ==(lhs: Protocol_Auth_V1_KeyResponse, rhs: Protocol_Auth_V1_KeyResponse) -> Bool {
     if lhs.key != rhs.key {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -1173,7 +1546,7 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.authToken) }()
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._authToken) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.domain) }()
       default: break
       }
@@ -1181,8 +1554,8 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.authToken.isEmpty {
-      try visitor.visitSingularStringField(value: self.authToken, fieldNumber: 1)
+    if let v = self._authToken {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
     }
     if !self.domain.isEmpty {
       try visitor.visitSingularStringField(value: self.domain, fieldNumber: 2)
@@ -1191,8 +1564,128 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
   }
 
   static func ==(lhs: Protocol_Auth_V1_LoginFederatedRequest, rhs: Protocol_Auth_V1_LoginFederatedRequest) -> Bool {
-    if lhs.authToken != rhs.authToken {return false}
+    if lhs._authToken != rhs._authToken {return false}
     if lhs.domain != rhs.domain {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_LoginFederatedResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".LoginFederatedResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "session"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._session) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._session {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_LoginFederatedResponse, rhs: Protocol_Auth_V1_LoginFederatedResponse) -> Bool {
+    if lhs._session != rhs._session {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_TokenData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".TokenData"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "user_id"),
+    2: .same(proto: "target"),
+    3: .same(proto: "username"),
+    4: .same(proto: "avatar"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.userID) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.target) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.username) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.avatar) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.userID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.userID, fieldNumber: 1)
+    }
+    if !self.target.isEmpty {
+      try visitor.visitSingularStringField(value: self.target, fieldNumber: 2)
+    }
+    if !self.username.isEmpty {
+      try visitor.visitSingularStringField(value: self.username, fieldNumber: 3)
+    }
+    if !self.avatar.isEmpty {
+      try visitor.visitSingularStringField(value: self.avatar, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_TokenData, rhs: Protocol_Auth_V1_TokenData) -> Bool {
+    if lhs.userID != rhs.userID {return false}
+    if lhs.target != rhs.target {return false}
+    if lhs.username != rhs.username {return false}
+    if lhs.avatar != rhs.avatar {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_CheckLoggedInRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CheckLoggedInRequest"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_CheckLoggedInRequest, rhs: Protocol_Auth_V1_CheckLoggedInRequest) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Auth_V1_CheckLoggedInResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CheckLoggedInResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Auth_V1_CheckLoggedInResponse, rhs: Protocol_Auth_V1_CheckLoggedInResponse) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
