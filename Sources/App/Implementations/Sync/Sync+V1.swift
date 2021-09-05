@@ -1,6 +1,6 @@
 import Fluent
 import Vapor
 
-class SyncV1 : MediaProxyServiceServer {
+class SyncV1 : PostboxServiceServer {
 
 }

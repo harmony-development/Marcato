@@ -528,9 +528,8 @@ struct Protocol_Auth_V1_FederateRequest {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  /// target: the foreign server you want to
-  /// federate with
-  var target: String = String()
+  /// The server ID foreign server you want to federate with
+  var serverID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -606,8 +605,8 @@ struct Protocol_Auth_V1_LoginFederatedRequest {
   /// Clears the value of `authToken`. Subsequent reads from it will return its default value.
   mutating func clearAuthToken() {self._authToken = nil}
 
-  /// domain: the homeserver that the auth token is from
-  var domain: String = String()
+  /// The server ID of the homeserver that the auth token is from
+  var serverID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -649,18 +648,27 @@ struct Protocol_Auth_V1_TokenData {
   /// The client's user ID on the homeserver.
   var userID: UInt64 = 0
 
-  /// The foreignserver's server name.
-  var target: String = String()
+  /// The foreignserver's server ID.
+  var serverID: String = String()
 
   /// The username of the client.
   var username: String = String()
 
   /// The avatar of the client.
-  var avatar: String = String()
+  var avatar: String {
+    get {return _avatar ?? String()}
+    set {_avatar = newValue}
+  }
+  /// Returns true if `avatar` has been explicitly set.
+  var hasAvatar: Bool {return self._avatar != nil}
+  /// Clears the value of `avatar`. Subsequent reads from it will return its default value.
+  mutating func clearAvatar() {self._avatar = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _avatar: String? = nil
 }
 
 /// Used in `CheckLoggedIn` endpoint.
@@ -1421,7 +1429,7 @@ extension Protocol_Auth_V1_StreamStepsResponse: SwiftProtobuf.Message, SwiftProt
 extension Protocol_Auth_V1_FederateRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".FederateRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "target"),
+    1: .standard(proto: "server_id"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1430,21 +1438,21 @@ extension Protocol_Auth_V1_FederateRequest: SwiftProtobuf.Message, SwiftProtobuf
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.target) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self.serverID) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.target.isEmpty {
-      try visitor.visitSingularStringField(value: self.target, fieldNumber: 1)
+    if !self.serverID.isEmpty {
+      try visitor.visitSingularStringField(value: self.serverID, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Auth_V1_FederateRequest, rhs: Protocol_Auth_V1_FederateRequest) -> Bool {
-    if lhs.target != rhs.target {return false}
+    if lhs.serverID != rhs.serverID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1537,7 +1545,7 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
   static let protoMessageName: String = _protobuf_package + ".LoginFederatedRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "auth_token"),
-    2: .same(proto: "domain"),
+    2: .standard(proto: "server_id"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1547,7 +1555,7 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularMessageField(value: &self._authToken) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.domain) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.serverID) }()
       default: break
       }
     }
@@ -1557,15 +1565,15 @@ extension Protocol_Auth_V1_LoginFederatedRequest: SwiftProtobuf.Message, SwiftPr
     if let v = self._authToken {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
     }
-    if !self.domain.isEmpty {
-      try visitor.visitSingularStringField(value: self.domain, fieldNumber: 2)
+    if !self.serverID.isEmpty {
+      try visitor.visitSingularStringField(value: self.serverID, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Auth_V1_LoginFederatedRequest, rhs: Protocol_Auth_V1_LoginFederatedRequest) -> Bool {
     if lhs._authToken != rhs._authToken {return false}
-    if lhs.domain != rhs.domain {return false}
+    if lhs.serverID != rhs.serverID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1607,7 +1615,7 @@ extension Protocol_Auth_V1_TokenData: SwiftProtobuf.Message, SwiftProtobuf._Mess
   static let protoMessageName: String = _protobuf_package + ".TokenData"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "user_id"),
-    2: .same(proto: "target"),
+    2: .standard(proto: "server_id"),
     3: .same(proto: "username"),
     4: .same(proto: "avatar"),
   ]
@@ -1619,9 +1627,9 @@ extension Protocol_Auth_V1_TokenData: SwiftProtobuf.Message, SwiftProtobuf._Mess
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.userID) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.target) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.serverID) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.username) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.avatar) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self._avatar) }()
       default: break
       }
     }
@@ -1631,23 +1639,23 @@ extension Protocol_Auth_V1_TokenData: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if self.userID != 0 {
       try visitor.visitSingularUInt64Field(value: self.userID, fieldNumber: 1)
     }
-    if !self.target.isEmpty {
-      try visitor.visitSingularStringField(value: self.target, fieldNumber: 2)
+    if !self.serverID.isEmpty {
+      try visitor.visitSingularStringField(value: self.serverID, fieldNumber: 2)
     }
     if !self.username.isEmpty {
       try visitor.visitSingularStringField(value: self.username, fieldNumber: 3)
     }
-    if !self.avatar.isEmpty {
-      try visitor.visitSingularStringField(value: self.avatar, fieldNumber: 4)
+    if let v = self._avatar {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Auth_V1_TokenData, rhs: Protocol_Auth_V1_TokenData) -> Bool {
     if lhs.userID != rhs.userID {return false}
-    if lhs.target != rhs.target {return false}
+    if lhs.serverID != rhs.serverID {return false}
     if lhs.username != rhs.username {return false}
-    if lhs.avatar != rhs.avatar {return false}
+    if lhs._avatar != rhs._avatar {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

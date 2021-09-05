@@ -20,29 +20,16 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-struct Protocol_Chat_V1_QueryPermissionsRequest {
+/// Object representing a single permission node.
+struct Protocol_Chat_V1_Permission {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var guildID: UInt64 = 0
+  /// the permission matcher. (example: roles.manage)
+  var matches: String = String()
 
-  var channelID: UInt64 = 0
-
-  var checkFor: String = String()
-
-  var `as`: UInt64 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Chat_V1_QueryPermissionsResponse {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
+  /// whether the permission is allowed or not.
   var ok: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -50,149 +37,22 @@ struct Protocol_Chat_V1_QueryPermissionsResponse {
   init() {}
 }
 
-struct Protocol_Chat_V1_Permission {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var matches: String = String()
-
-  var mode: Protocol_Chat_V1_Permission.Mode = .allow
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  enum Mode: SwiftProtobuf.Enum {
-    typealias RawValue = Int
-    case allow // = 0
-    case deny // = 1
-    case UNRECOGNIZED(Int)
-
-    init() {
-      self = .allow
-    }
-
-    init?(rawValue: Int) {
-      switch rawValue {
-      case 0: self = .allow
-      case 1: self = .deny
-      default: self = .UNRECOGNIZED(rawValue)
-      }
-    }
-
-    var rawValue: Int {
-      switch self {
-      case .allow: return 0
-      case .deny: return 1
-      case .UNRECOGNIZED(let i): return i
-      }
-    }
-
-  }
-
-  init() {}
-}
-
-#if swift(>=4.2)
-
-extension Protocol_Chat_V1_Permission.Mode: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static var allCases: [Protocol_Chat_V1_Permission.Mode] = [
-    .allow,
-    .deny,
-  ]
-}
-
-#endif  // swift(>=4.2)
-
-struct Protocol_Chat_V1_PermissionList {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var permissions: [Protocol_Chat_V1_Permission] = []
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Chat_V1_SetPermissionsRequest {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var guildID: UInt64 = 0
-
-  var channelID: UInt64 = 0
-
-  var roleID: UInt64 = 0
-
-  var perms: Protocol_Chat_V1_PermissionList {
-    get {return _perms ?? Protocol_Chat_V1_PermissionList()}
-    set {_perms = newValue}
-  }
-  /// Returns true if `perms` has been explicitly set.
-  var hasPerms: Bool {return self._perms != nil}
-  /// Clears the value of `perms`. Subsequent reads from it will return its default value.
-  mutating func clearPerms() {self._perms = nil}
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _perms: Protocol_Chat_V1_PermissionList? = nil
-}
-
-struct Protocol_Chat_V1_GetPermissionsRequest {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var guildID: UInt64 = 0
-
-  var channelID: UInt64 = 0
-
-  var roleID: UInt64 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Protocol_Chat_V1_GetPermissionsResponse {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var perms: Protocol_Chat_V1_PermissionList {
-    get {return _perms ?? Protocol_Chat_V1_PermissionList()}
-    set {_perms = newValue}
-  }
-  /// Returns true if `perms` has been explicitly set.
-  var hasPerms: Bool {return self._perms != nil}
-  /// Clears the value of `perms`. Subsequent reads from it will return its default value.
-  mutating func clearPerms() {self._perms = nil}
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _perms: Protocol_Chat_V1_PermissionList? = nil
-}
-
+/// Object representing a role without the ID.
 struct Protocol_Chat_V1_Role {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var roleID: UInt64 = 0
-
+  /// the role name.
   var name: String = String()
 
+  /// the role color.
   var color: Int32 = 0
 
+  /// whether the role is hoisted or not.
   var hoist: Bool = false
 
+  /// whether the role is mentionable or not.
   var pingable: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -200,24 +60,211 @@ struct Protocol_Chat_V1_Role {
   init() {}
 }
 
-struct Protocol_Chat_V1_MoveRoleRequest {
+/// Object representing a role with it's ID.
+///
+/// The role ID for the default role in a guild should always be 0.
+struct Protocol_Chat_V1_RoleWithId {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var guildID: UInt64 = 0
-
+  /// ID of the role.
   var roleID: UInt64 = 0
 
-  var beforeID: UInt64 = 0
+  /// The role data.
+  var role: Protocol_Chat_V1_Role {
+    get {return _role ?? Protocol_Chat_V1_Role()}
+    set {_role = newValue}
+  }
+  /// Returns true if `role` has been explicitly set.
+  var hasRole: Bool {return self._role != nil}
+  /// Clears the value of `role`. Subsequent reads from it will return its default value.
+  mutating func clearRole() {self._role = nil}
 
-  var afterID: UInt64 = 0
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _role: Protocol_Chat_V1_Role? = nil
+}
+
+/// Used in the `QueryHasPermission` endpoint.
+struct Protocol_Chat_V1_QueryHasPermissionRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the guild ID to query permissions for
+  var guildID: UInt64 = 0
+
+  /// the channel ID to query permissions for. If not set, it will query
+  /// permissions for the guild.
+  var channelID: UInt64 {
+    get {return _channelID ?? 0}
+    set {_channelID = newValue}
+  }
+  /// Returns true if `channelID` has been explicitly set.
+  var hasChannelID: Bool {return self._channelID != nil}
+  /// Clears the value of `channelID`. Subsequent reads from it will return its default value.
+  mutating func clearChannelID() {self._channelID = nil}
+
+  /// the user ID to query permissions for (if not provided, the current user is
+  /// assumed).
+  var `as`: UInt64 {
+    get {return _as ?? 0}
+    set {_as = newValue}
+  }
+  /// Returns true if ``as`` has been explicitly set.
+  var hasAs: Bool {return self._as != nil}
+  /// Clears the value of ``as``. Subsequent reads from it will return its default value.
+  mutating func clearAs() {self._as = nil}
+
+  /// the permission node to check for.
+  var checkFor: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _channelID: UInt64? = nil
+  fileprivate var _as: UInt64? = nil
+}
+
+/// Used in the `QueryHasPermission` endpoint.
+struct Protocol_Chat_V1_QueryHasPermissionResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the permissions for the given node.
+  var ok: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+/// Used in the `SetPermissions` endpoint.
+struct Protocol_Chat_V1_SetPermissionsRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the guild ID to set permissions for.
+  var guildID: UInt64 = 0
+
+  /// the channel ID to set permissions for. Only set if the role is for a
+  /// channel.
+  var channelID: UInt64 {
+    get {return _channelID ?? 0}
+    set {_channelID = newValue}
+  }
+  /// Returns true if `channelID` has been explicitly set.
+  var hasChannelID: Bool {return self._channelID != nil}
+  /// Clears the value of `channelID`. Subsequent reads from it will return its default value.
+  mutating func clearChannelID() {self._channelID = nil}
+
+  /// the role ID to set permissions for.
+  var roleID: UInt64 = 0
+
+  /// the permission list to give.
+  ///
+  /// There is no "perms_to_take" because not given permissions are by
+  /// default not allowed.
+  var permsToGive: [Protocol_Chat_V1_Permission] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _channelID: UInt64? = nil
+}
+
+/// Used in the `SetPermissions` endpoint.
+struct Protocol_Chat_V1_SetPermissionsResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `GetPermissions` endpoint.
+struct Protocol_Chat_V1_GetPermissionsRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the guild ID to get permissions for.
+  var guildID: UInt64 = 0
+
+  /// the channel ID to get permissions for. Only applicable for roles in a
+  /// channel.
+  var channelID: UInt64 {
+    get {return _channelID ?? 0}
+    set {_channelID = newValue}
+  }
+  /// Returns true if `channelID` has been explicitly set.
+  var hasChannelID: Bool {return self._channelID != nil}
+  /// Clears the value of `channelID`. Subsequent reads from it will return its default value.
+  mutating func clearChannelID() {self._channelID = nil}
+
+  /// the role ID to get permissions for.
+  var roleID: UInt64 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _channelID: UInt64? = nil
+}
+
+/// Used in the `GetPermissions` endpoint.
+struct Protocol_Chat_V1_GetPermissionsResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the permissions list for the given role.
+  var perms: [Protocol_Chat_V1_Permission] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `MoveRole` endpoint.
+struct Protocol_Chat_V1_MoveRoleRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// the guild ID to move the role in.
+  var guildID: UInt64 = 0
+
+  /// the role ID to move.
+  var roleID: UInt64 = 0
+
+  /// the new position of the role.
+  var newPosition: Protocol_Harmonytypes_V1_ItemPosition {
+    get {return _newPosition ?? Protocol_Harmonytypes_V1_ItemPosition()}
+    set {_newPosition = newValue}
+  }
+  /// Returns true if `newPosition` has been explicitly set.
+  var hasNewPosition: Bool {return self._newPosition != nil}
+  /// Clears the value of `newPosition`. Subsequent reads from it will return its default value.
+  mutating func clearNewPosition() {self._newPosition = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _newPosition: Protocol_Harmonytypes_V1_ItemPosition? = nil
+}
+
+/// Used in the `MoveRole` endpoint.
 struct Protocol_Chat_V1_MoveRoleResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -228,11 +275,13 @@ struct Protocol_Chat_V1_MoveRoleResponse {
   init() {}
 }
 
+/// Used in the `GetGuildRoles` endpoint.
 struct Protocol_Chat_V1_GetGuildRolesRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the guild ID to get roles for.
   var guildID: UInt64 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -240,46 +289,53 @@ struct Protocol_Chat_V1_GetGuildRolesRequest {
   init() {}
 }
 
+/// Used in the `GetGuildRoles` endpoint.
 struct Protocol_Chat_V1_GetGuildRolesResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var roles: [Protocol_Chat_V1_Role] = []
+  /// the list of roles in the guild.
+  var roles: [Protocol_Chat_V1_RoleWithId] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+/// Used in the `AddGuildRole` endpoint.
 struct Protocol_Chat_V1_AddGuildRoleRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the guild ID to add the role to.
   var guildID: UInt64 = 0
 
-  var role: Protocol_Chat_V1_Role {
-    get {return _role ?? Protocol_Chat_V1_Role()}
-    set {_role = newValue}
-  }
-  /// Returns true if `role` has been explicitly set.
-  var hasRole: Bool {return self._role != nil}
-  /// Clears the value of `role`. Subsequent reads from it will return its default value.
-  mutating func clearRole() {self._role = nil}
+  /// the role name.
+  var name: String = String()
+
+  /// the role color.
+  var color: Int32 = 0
+
+  /// whether the role is hoisted or not.
+  var hoist: Bool = false
+
+  /// whether the role is mentionable or not.
+  var pingable: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _role: Protocol_Chat_V1_Role? = nil
 }
 
+/// Used in the `AddGuildRole` endpoint.
 struct Protocol_Chat_V1_AddGuildRoleResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the ID of the newly created role.
   var roleID: UInt64 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -287,13 +343,16 @@ struct Protocol_Chat_V1_AddGuildRoleResponse {
   init() {}
 }
 
+/// Used in the `DeleteGuildRole` endpoint.
 struct Protocol_Chat_V1_DeleteGuildRoleRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the guild ID to delete the role from.
   var guildID: UInt64 = 0
 
+  /// the role ID to delete.
   var roleID: UInt64 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -301,48 +360,106 @@ struct Protocol_Chat_V1_DeleteGuildRoleRequest {
   init() {}
 }
 
+/// Used in the `DeleteGuildRole` endpoint.
+struct Protocol_Chat_V1_DeleteGuildRoleResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `ModifyGuildRole` endpoint.
 struct Protocol_Chat_V1_ModifyGuildRoleRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the ID of the guild where the role is located
   var guildID: UInt64 = 0
 
-  var role: Protocol_Chat_V1_Role {
-    get {return _role ?? Protocol_Chat_V1_Role()}
-    set {_role = newValue}
+  /// the ID of the role to modify
+  var roleID: UInt64 = 0
+
+  /// the new name of the role
+  var newName: String {
+    get {return _newName ?? String()}
+    set {_newName = newValue}
   }
-  /// Returns true if `role` has been explicitly set.
-  var hasRole: Bool {return self._role != nil}
-  /// Clears the value of `role`. Subsequent reads from it will return its default value.
-  mutating func clearRole() {self._role = nil}
+  /// Returns true if `newName` has been explicitly set.
+  var hasNewName: Bool {return self._newName != nil}
+  /// Clears the value of `newName`. Subsequent reads from it will return its default value.
+  mutating func clearNewName() {self._newName = nil}
 
-  var modifyName: Bool = false
+  /// the new color of the role
+  var newColor: Int32 {
+    get {return _newColor ?? 0}
+    set {_newColor = newValue}
+  }
+  /// Returns true if `newColor` has been explicitly set.
+  var hasNewColor: Bool {return self._newColor != nil}
+  /// Clears the value of `newColor`. Subsequent reads from it will return its default value.
+  mutating func clearNewColor() {self._newColor = nil}
 
-  var modifyColor: Bool = false
+  /// the new hoist status of the role
+  var newHoist: Bool {
+    get {return _newHoist ?? false}
+    set {_newHoist = newValue}
+  }
+  /// Returns true if `newHoist` has been explicitly set.
+  var hasNewHoist: Bool {return self._newHoist != nil}
+  /// Clears the value of `newHoist`. Subsequent reads from it will return its default value.
+  mutating func clearNewHoist() {self._newHoist = nil}
 
-  var modifyHoist: Bool = false
-
-  var modifyPingable: Bool = false
+  /// the new pingable status of the role
+  var newPingable: Bool {
+    get {return _newPingable ?? false}
+    set {_newPingable = newValue}
+  }
+  /// Returns true if `newPingable` has been explicitly set.
+  var hasNewPingable: Bool {return self._newPingable != nil}
+  /// Clears the value of `newPingable`. Subsequent reads from it will return its default value.
+  mutating func clearNewPingable() {self._newPingable = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
-  fileprivate var _role: Protocol_Chat_V1_Role? = nil
+  fileprivate var _newName: String? = nil
+  fileprivate var _newColor: Int32? = nil
+  fileprivate var _newHoist: Bool? = nil
+  fileprivate var _newPingable: Bool? = nil
 }
 
+/// Used in the `ModifyGuildRole` endpoint.
+struct Protocol_Chat_V1_ModifyGuildRoleResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `ManageUserRoles` endpoint.
 struct Protocol_Chat_V1_ManageUserRolesRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the ID of the guild where the user is being managed
   var guildID: UInt64 = 0
 
+  /// the ID of the user to modify
   var userID: UInt64 = 0
 
+  /// the IDs of the roles to add
   var giveRoleIds: [UInt64] = []
 
+  /// the IDs of the roles to remove
   var takeRoleIds: [UInt64] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -350,13 +467,27 @@ struct Protocol_Chat_V1_ManageUserRolesRequest {
   init() {}
 }
 
+/// Used in the `ManageUserRoles` endpoint.
+struct Protocol_Chat_V1_ManageUserRolesResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `GetUserRoles` endpoint.
 struct Protocol_Chat_V1_GetUserRolesRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// the ID of the guild where the user is located
   var guildID: UInt64 = 0
 
+  /// the ID of the user to get roles for
   var userID: UInt64 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -364,11 +495,13 @@ struct Protocol_Chat_V1_GetUserRolesRequest {
   init() {}
 }
 
+/// Used in the `GetUserRoles` endpoint.
 struct Protocol_Chat_V1_GetUserRolesResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// a list of IDs of the roles the user has
   var roles: [UInt64] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -380,13 +513,139 @@ struct Protocol_Chat_V1_GetUserRolesResponse {
 
 fileprivate let _protobuf_package = "protocol.chat.v1"
 
-extension Protocol_Chat_V1_QueryPermissionsRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".QueryPermissionsRequest"
+extension Protocol_Chat_V1_Permission: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Permission"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "matches"),
+    2: .same(proto: "ok"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.matches) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self.ok) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.matches.isEmpty {
+      try visitor.visitSingularStringField(value: self.matches, fieldNumber: 1)
+    }
+    if self.ok != false {
+      try visitor.visitSingularBoolField(value: self.ok, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_Permission, rhs: Protocol_Chat_V1_Permission) -> Bool {
+    if lhs.matches != rhs.matches {return false}
+    if lhs.ok != rhs.ok {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_Role: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Role"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "name"),
+    2: .same(proto: "color"),
+    3: .same(proto: "hoist"),
+    4: .same(proto: "pingable"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.color) }()
+      case 3: try { try decoder.decodeSingularBoolField(value: &self.hoist) }()
+      case 4: try { try decoder.decodeSingularBoolField(value: &self.pingable) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.name.isEmpty {
+      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
+    }
+    if self.color != 0 {
+      try visitor.visitSingularInt32Field(value: self.color, fieldNumber: 2)
+    }
+    if self.hoist != false {
+      try visitor.visitSingularBoolField(value: self.hoist, fieldNumber: 3)
+    }
+    if self.pingable != false {
+      try visitor.visitSingularBoolField(value: self.pingable, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_Role, rhs: Protocol_Chat_V1_Role) -> Bool {
+    if lhs.name != rhs.name {return false}
+    if lhs.color != rhs.color {return false}
+    if lhs.hoist != rhs.hoist {return false}
+    if lhs.pingable != rhs.pingable {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_RoleWithId: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".RoleWithId"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "role_id"),
+    2: .same(proto: "role"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
+      case 2: try { try decoder.decodeSingularMessageField(value: &self._role) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.roleID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 1)
+    }
+    if let v = self._role {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_RoleWithId, rhs: Protocol_Chat_V1_RoleWithId) -> Bool {
+    if lhs.roleID != rhs.roleID {return false}
+    if lhs._role != rhs._role {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_QueryHasPermissionRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".QueryHasPermissionRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "guild_id"),
     2: .standard(proto: "channel_id"),
-    3: .standard(proto: "check_for"),
     4: .same(proto: "as"),
+    3: .standard(proto: "check_for"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -396,9 +655,9 @@ extension Protocol_Chat_V1_QueryPermissionsRequest: SwiftProtobuf.Message, Swift
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
-      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.channelID) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self._channelID) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.checkFor) }()
-      case 4: try { try decoder.decodeSingularUInt64Field(value: &self.`as`) }()
+      case 4: try { try decoder.decodeSingularUInt64Field(value: &self._as) }()
       default: break
       }
     }
@@ -408,30 +667,30 @@ extension Protocol_Chat_V1_QueryPermissionsRequest: SwiftProtobuf.Message, Swift
     if self.guildID != 0 {
       try visitor.visitSingularUInt64Field(value: self.guildID, fieldNumber: 1)
     }
-    if self.channelID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.channelID, fieldNumber: 2)
+    if let v = self._channelID {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 2)
     }
     if !self.checkFor.isEmpty {
       try visitor.visitSingularStringField(value: self.checkFor, fieldNumber: 3)
     }
-    if self.`as` != 0 {
-      try visitor.visitSingularUInt64Field(value: self.`as`, fieldNumber: 4)
+    if let v = self._as {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Protocol_Chat_V1_QueryPermissionsRequest, rhs: Protocol_Chat_V1_QueryPermissionsRequest) -> Bool {
+  static func ==(lhs: Protocol_Chat_V1_QueryHasPermissionRequest, rhs: Protocol_Chat_V1_QueryHasPermissionRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
-    if lhs.channelID != rhs.channelID {return false}
+    if lhs._channelID != rhs._channelID {return false}
+    if lhs._as != rhs._as {return false}
     if lhs.checkFor != rhs.checkFor {return false}
-    if lhs.`as` != rhs.`as` {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Protocol_Chat_V1_QueryPermissionsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".QueryPermissionsResponse"
+extension Protocol_Chat_V1_QueryHasPermissionResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".QueryHasPermissionResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "ok"),
   ]
@@ -455,85 +714,8 @@ extension Protocol_Chat_V1_QueryPermissionsResponse: SwiftProtobuf.Message, Swif
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Protocol_Chat_V1_QueryPermissionsResponse, rhs: Protocol_Chat_V1_QueryPermissionsResponse) -> Bool {
+  static func ==(lhs: Protocol_Chat_V1_QueryHasPermissionResponse, rhs: Protocol_Chat_V1_QueryHasPermissionResponse) -> Bool {
     if lhs.ok != rhs.ok {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Chat_V1_Permission: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Permission"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "matches"),
-    2: .same(proto: "mode"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.matches) }()
-      case 2: try { try decoder.decodeSingularEnumField(value: &self.mode) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.matches.isEmpty {
-      try visitor.visitSingularStringField(value: self.matches, fieldNumber: 1)
-    }
-    if self.mode != .allow {
-      try visitor.visitSingularEnumField(value: self.mode, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Chat_V1_Permission, rhs: Protocol_Chat_V1_Permission) -> Bool {
-    if lhs.matches != rhs.matches {return false}
-    if lhs.mode != rhs.mode {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Chat_V1_Permission.Mode: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "Allow"),
-    1: .same(proto: "Deny"),
-  ]
-}
-
-extension Protocol_Chat_V1_PermissionList: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".PermissionList"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "permissions"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.permissions) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.permissions.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.permissions, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Chat_V1_PermissionList, rhs: Protocol_Chat_V1_PermissionList) -> Bool {
-    if lhs.permissions != rhs.permissions {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -545,7 +727,7 @@ extension Protocol_Chat_V1_SetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
     1: .standard(proto: "guild_id"),
     2: .standard(proto: "channel_id"),
     3: .standard(proto: "role_id"),
-    4: .same(proto: "perms"),
+    4: .standard(proto: "perms_to_give"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -555,9 +737,9 @@ extension Protocol_Chat_V1_SetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
-      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.channelID) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self._channelID) }()
       case 3: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
-      case 4: try { try decoder.decodeSingularMessageField(value: &self._perms) }()
+      case 4: try { try decoder.decodeRepeatedMessageField(value: &self.permsToGive) }()
       default: break
       }
     }
@@ -567,23 +749,42 @@ extension Protocol_Chat_V1_SetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
     if self.guildID != 0 {
       try visitor.visitSingularUInt64Field(value: self.guildID, fieldNumber: 1)
     }
-    if self.channelID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.channelID, fieldNumber: 2)
+    if let v = self._channelID {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 2)
     }
     if self.roleID != 0 {
       try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 3)
     }
-    if let v = self._perms {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    if !self.permsToGive.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.permsToGive, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Chat_V1_SetPermissionsRequest, rhs: Protocol_Chat_V1_SetPermissionsRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
-    if lhs.channelID != rhs.channelID {return false}
+    if lhs._channelID != rhs._channelID {return false}
     if lhs.roleID != rhs.roleID {return false}
-    if lhs._perms != rhs._perms {return false}
+    if lhs.permsToGive != rhs.permsToGive {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_SetPermissionsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SetPermissionsResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_SetPermissionsResponse, rhs: Protocol_Chat_V1_SetPermissionsResponse) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -604,7 +805,7 @@ extension Protocol_Chat_V1_GetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
-      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.channelID) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self._channelID) }()
       case 3: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
       default: break
       }
@@ -615,8 +816,8 @@ extension Protocol_Chat_V1_GetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
     if self.guildID != 0 {
       try visitor.visitSingularUInt64Field(value: self.guildID, fieldNumber: 1)
     }
-    if self.channelID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.channelID, fieldNumber: 2)
+    if let v = self._channelID {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 2)
     }
     if self.roleID != 0 {
       try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 3)
@@ -626,7 +827,7 @@ extension Protocol_Chat_V1_GetPermissionsRequest: SwiftProtobuf.Message, SwiftPr
 
   static func ==(lhs: Protocol_Chat_V1_GetPermissionsRequest, rhs: Protocol_Chat_V1_GetPermissionsRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
-    if lhs.channelID != rhs.channelID {return false}
+    if lhs._channelID != rhs._channelID {return false}
     if lhs.roleID != rhs.roleID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -645,77 +846,21 @@ extension Protocol_Chat_V1_GetPermissionsResponse: SwiftProtobuf.Message, SwiftP
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._perms) }()
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.perms) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._perms {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    if !self.perms.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.perms, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Chat_V1_GetPermissionsResponse, rhs: Protocol_Chat_V1_GetPermissionsResponse) -> Bool {
-    if lhs._perms != rhs._perms {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Chat_V1_Role: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Role"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "role_id"),
-    2: .same(proto: "name"),
-    3: .same(proto: "color"),
-    4: .same(proto: "hoist"),
-    5: .same(proto: "pingable"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 3: try { try decoder.decodeSingularInt32Field(value: &self.color) }()
-      case 4: try { try decoder.decodeSingularBoolField(value: &self.hoist) }()
-      case 5: try { try decoder.decodeSingularBoolField(value: &self.pingable) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.roleID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 1)
-    }
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 2)
-    }
-    if self.color != 0 {
-      try visitor.visitSingularInt32Field(value: self.color, fieldNumber: 3)
-    }
-    if self.hoist != false {
-      try visitor.visitSingularBoolField(value: self.hoist, fieldNumber: 4)
-    }
-    if self.pingable != false {
-      try visitor.visitSingularBoolField(value: self.pingable, fieldNumber: 5)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Chat_V1_Role, rhs: Protocol_Chat_V1_Role) -> Bool {
-    if lhs.roleID != rhs.roleID {return false}
-    if lhs.name != rhs.name {return false}
-    if lhs.color != rhs.color {return false}
-    if lhs.hoist != rhs.hoist {return false}
-    if lhs.pingable != rhs.pingable {return false}
+    if lhs.perms != rhs.perms {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -726,8 +871,7 @@ extension Protocol_Chat_V1_MoveRoleRequest: SwiftProtobuf.Message, SwiftProtobuf
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "guild_id"),
     2: .standard(proto: "role_id"),
-    3: .standard(proto: "before_id"),
-    4: .standard(proto: "after_id"),
+    3: .standard(proto: "new_position"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -738,8 +882,7 @@ extension Protocol_Chat_V1_MoveRoleRequest: SwiftProtobuf.Message, SwiftProtobuf
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
       case 2: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
-      case 3: try { try decoder.decodeSingularUInt64Field(value: &self.beforeID) }()
-      case 4: try { try decoder.decodeSingularUInt64Field(value: &self.afterID) }()
+      case 3: try { try decoder.decodeSingularMessageField(value: &self._newPosition) }()
       default: break
       }
     }
@@ -752,11 +895,8 @@ extension Protocol_Chat_V1_MoveRoleRequest: SwiftProtobuf.Message, SwiftProtobuf
     if self.roleID != 0 {
       try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 2)
     }
-    if self.beforeID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.beforeID, fieldNumber: 3)
-    }
-    if self.afterID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.afterID, fieldNumber: 4)
+    if let v = self._newPosition {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -764,8 +904,7 @@ extension Protocol_Chat_V1_MoveRoleRequest: SwiftProtobuf.Message, SwiftProtobuf
   static func ==(lhs: Protocol_Chat_V1_MoveRoleRequest, rhs: Protocol_Chat_V1_MoveRoleRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
     if lhs.roleID != rhs.roleID {return false}
-    if lhs.beforeID != rhs.beforeID {return false}
-    if lhs.afterID != rhs.afterID {return false}
+    if lhs._newPosition != rhs._newPosition {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -858,7 +997,10 @@ extension Protocol_Chat_V1_AddGuildRoleRequest: SwiftProtobuf.Message, SwiftProt
   static let protoMessageName: String = _protobuf_package + ".AddGuildRoleRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "guild_id"),
-    2: .same(proto: "role"),
+    2: .same(proto: "name"),
+    3: .same(proto: "color"),
+    4: .same(proto: "hoist"),
+    5: .same(proto: "pingable"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -868,7 +1010,10 @@ extension Protocol_Chat_V1_AddGuildRoleRequest: SwiftProtobuf.Message, SwiftProt
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
-      case 2: try { try decoder.decodeSingularMessageField(value: &self._role) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.color) }()
+      case 4: try { try decoder.decodeSingularBoolField(value: &self.hoist) }()
+      case 5: try { try decoder.decodeSingularBoolField(value: &self.pingable) }()
       default: break
       }
     }
@@ -878,15 +1023,27 @@ extension Protocol_Chat_V1_AddGuildRoleRequest: SwiftProtobuf.Message, SwiftProt
     if self.guildID != 0 {
       try visitor.visitSingularUInt64Field(value: self.guildID, fieldNumber: 1)
     }
-    if let v = self._role {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    if !self.name.isEmpty {
+      try visitor.visitSingularStringField(value: self.name, fieldNumber: 2)
+    }
+    if self.color != 0 {
+      try visitor.visitSingularInt32Field(value: self.color, fieldNumber: 3)
+    }
+    if self.hoist != false {
+      try visitor.visitSingularBoolField(value: self.hoist, fieldNumber: 4)
+    }
+    if self.pingable != false {
+      try visitor.visitSingularBoolField(value: self.pingable, fieldNumber: 5)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Chat_V1_AddGuildRoleRequest, rhs: Protocol_Chat_V1_AddGuildRoleRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
-    if lhs._role != rhs._role {return false}
+    if lhs.name != rhs.name {return false}
+    if lhs.color != rhs.color {return false}
+    if lhs.hoist != rhs.hoist {return false}
+    if lhs.pingable != rhs.pingable {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -962,15 +1119,34 @@ extension Protocol_Chat_V1_DeleteGuildRoleRequest: SwiftProtobuf.Message, SwiftP
   }
 }
 
+extension Protocol_Chat_V1_DeleteGuildRoleResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".DeleteGuildRoleResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_DeleteGuildRoleResponse, rhs: Protocol_Chat_V1_DeleteGuildRoleResponse) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Protocol_Chat_V1_ModifyGuildRoleRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".ModifyGuildRoleRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "guild_id"),
-    2: .same(proto: "role"),
-    3: .standard(proto: "modify_name"),
-    4: .standard(proto: "modify_color"),
-    5: .standard(proto: "modify_hoist"),
-    6: .standard(proto: "modify_pingable"),
+    2: .standard(proto: "role_id"),
+    3: .standard(proto: "new_name"),
+    4: .standard(proto: "new_color"),
+    5: .standard(proto: "new_hoist"),
+    6: .standard(proto: "new_pingable"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -980,11 +1156,11 @@ extension Protocol_Chat_V1_ModifyGuildRoleRequest: SwiftProtobuf.Message, SwiftP
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt64Field(value: &self.guildID) }()
-      case 2: try { try decoder.decodeSingularMessageField(value: &self._role) }()
-      case 3: try { try decoder.decodeSingularBoolField(value: &self.modifyName) }()
-      case 4: try { try decoder.decodeSingularBoolField(value: &self.modifyColor) }()
-      case 5: try { try decoder.decodeSingularBoolField(value: &self.modifyHoist) }()
-      case 6: try { try decoder.decodeSingularBoolField(value: &self.modifyPingable) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.roleID) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self._newName) }()
+      case 4: try { try decoder.decodeSingularInt32Field(value: &self._newColor) }()
+      case 5: try { try decoder.decodeSingularBoolField(value: &self._newHoist) }()
+      case 6: try { try decoder.decodeSingularBoolField(value: &self._newPingable) }()
       default: break
       }
     }
@@ -994,31 +1170,50 @@ extension Protocol_Chat_V1_ModifyGuildRoleRequest: SwiftProtobuf.Message, SwiftP
     if self.guildID != 0 {
       try visitor.visitSingularUInt64Field(value: self.guildID, fieldNumber: 1)
     }
-    if let v = self._role {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    if self.roleID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.roleID, fieldNumber: 2)
     }
-    if self.modifyName != false {
-      try visitor.visitSingularBoolField(value: self.modifyName, fieldNumber: 3)
+    if let v = self._newName {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     }
-    if self.modifyColor != false {
-      try visitor.visitSingularBoolField(value: self.modifyColor, fieldNumber: 4)
+    if let v = self._newColor {
+      try visitor.visitSingularInt32Field(value: v, fieldNumber: 4)
     }
-    if self.modifyHoist != false {
-      try visitor.visitSingularBoolField(value: self.modifyHoist, fieldNumber: 5)
+    if let v = self._newHoist {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 5)
     }
-    if self.modifyPingable != false {
-      try visitor.visitSingularBoolField(value: self.modifyPingable, fieldNumber: 6)
+    if let v = self._newPingable {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 6)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Chat_V1_ModifyGuildRoleRequest, rhs: Protocol_Chat_V1_ModifyGuildRoleRequest) -> Bool {
     if lhs.guildID != rhs.guildID {return false}
-    if lhs._role != rhs._role {return false}
-    if lhs.modifyName != rhs.modifyName {return false}
-    if lhs.modifyColor != rhs.modifyColor {return false}
-    if lhs.modifyHoist != rhs.modifyHoist {return false}
-    if lhs.modifyPingable != rhs.modifyPingable {return false}
+    if lhs.roleID != rhs.roleID {return false}
+    if lhs._newName != rhs._newName {return false}
+    if lhs._newColor != rhs._newColor {return false}
+    if lhs._newHoist != rhs._newHoist {return false}
+    if lhs._newPingable != rhs._newPingable {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_ModifyGuildRoleResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ModifyGuildRoleResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_ModifyGuildRoleResponse, rhs: Protocol_Chat_V1_ModifyGuildRoleResponse) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1069,6 +1264,25 @@ extension Protocol_Chat_V1_ManageUserRolesRequest: SwiftProtobuf.Message, SwiftP
     if lhs.userID != rhs.userID {return false}
     if lhs.giveRoleIds != rhs.giveRoleIds {return false}
     if lhs.takeRoleIds != rhs.takeRoleIds {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Chat_V1_ManageUserRolesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ManageUserRolesResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Chat_V1_ManageUserRolesResponse, rhs: Protocol_Chat_V1_ManageUserRolesResponse) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -20,21 +20,28 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+/// Object representing the metadata of a website.
 struct Protocol_Mediaproxy_V1_SiteMetadata {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Title of the website.
   var siteTitle: String = String()
 
+  /// Page title of the website page.
   var pageTitle: String = String()
 
+  /// Kind of the website.
   var kind: String = String()
 
+  /// Description of the website page.
   var description_p: String = String()
 
+  /// URL of the website.
   var url: String = String()
 
+  /// A thumbnail image of the website.
   var image: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -42,13 +49,16 @@ struct Protocol_Mediaproxy_V1_SiteMetadata {
   init() {}
 }
 
+/// Object represeting the metadata of a media.
 struct Protocol_Mediaproxy_V1_MediaMetadata {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Mimetype of the media. 
   var mimetype: String = String()
 
+  /// Filename of the media.
   var filename: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -56,11 +66,13 @@ struct Protocol_Mediaproxy_V1_MediaMetadata {
   init() {}
 }
 
+/// Used in the `FetchLinkMetadata` endpoint.
 struct Protocol_Mediaproxy_V1_FetchLinkMetadataRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// URL to fetch metadata from.
   var url: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -68,13 +80,16 @@ struct Protocol_Mediaproxy_V1_FetchLinkMetadataRequest {
   init() {}
 }
 
+/// Used in the `FetchLinkMetadata` endpoint.
 struct Protocol_Mediaproxy_V1_FetchLinkMetadataResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Data of the metadata.
   var data: Protocol_Mediaproxy_V1_FetchLinkMetadataResponse.OneOf_Data? = nil
 
+  /// Site metadata for the URL.
   var isSite: Protocol_Mediaproxy_V1_SiteMetadata {
     get {
       if case .isSite(let v)? = data {return v}
@@ -83,6 +98,7 @@ struct Protocol_Mediaproxy_V1_FetchLinkMetadataResponse {
     set {data = .isSite(newValue)}
   }
 
+  /// Media metadata for the URL.
   var isMedia: Protocol_Mediaproxy_V1_MediaMetadata {
     get {
       if case .isMedia(let v)? = data {return v}
@@ -93,8 +109,11 @@ struct Protocol_Mediaproxy_V1_FetchLinkMetadataResponse {
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
+  /// Data of the metadata.
   enum OneOf_Data: Equatable {
+    /// Site metadata for the URL.
     case isSite(Protocol_Mediaproxy_V1_SiteMetadata)
+    /// Media metadata for the URL.
     case isMedia(Protocol_Mediaproxy_V1_MediaMetadata)
 
   #if !swift(>=4.1)
@@ -120,11 +139,13 @@ struct Protocol_Mediaproxy_V1_FetchLinkMetadataResponse {
   init() {}
 }
 
+/// Used in the `InstantView` endpoint.
 struct Protocol_Mediaproxy_V1_InstantViewRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// URL to get instant view for. 
   var url: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -132,11 +153,13 @@ struct Protocol_Mediaproxy_V1_InstantViewRequest {
   init() {}
 }
 
+/// Used in the `InstantView` endpoint.
 struct Protocol_Mediaproxy_V1_InstantViewResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Site metadata for the URL.
   var metadata: Protocol_Mediaproxy_V1_SiteMetadata {
     get {return _metadata ?? Protocol_Mediaproxy_V1_SiteMetadata()}
     set {_metadata = newValue}
@@ -146,8 +169,10 @@ struct Protocol_Mediaproxy_V1_InstantViewResponse {
   /// Clears the value of `metadata`. Subsequent reads from it will return its default value.
   mutating func clearMetadata() {self._metadata = nil}
 
+  /// Instant view content.
   var content: String = String()
 
+  /// Whether the instant view is valid.
   var isValid: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -157,11 +182,27 @@ struct Protocol_Mediaproxy_V1_InstantViewResponse {
   fileprivate var _metadata: Protocol_Mediaproxy_V1_SiteMetadata? = nil
 }
 
+/// Used in the `CanInstantView` endpoint.
+struct Protocol_Mediaproxy_V1_CanInstantViewRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// URL to query if server can instant view the website. 
+  var url: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Used in the `CanInstantView` endpoint.
 struct Protocol_Mediaproxy_V1_CanInstantViewResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Whether the server generate an instant view for the URL queried.
   var canInstantView: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -445,6 +486,38 @@ extension Protocol_Mediaproxy_V1_InstantViewResponse: SwiftProtobuf.Message, Swi
     if lhs._metadata != rhs._metadata {return false}
     if lhs.content != rhs.content {return false}
     if lhs.isValid != rhs.isValid {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Mediaproxy_V1_CanInstantViewRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CanInstantViewRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "url"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.url) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.url.isEmpty {
+      try visitor.visitSingularStringField(value: self.url, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Mediaproxy_V1_CanInstantViewRequest, rhs: Protocol_Mediaproxy_V1_CanInstantViewRequest) -> Bool {
+    if lhs.url != rhs.url {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -36,34 +36,61 @@ struct Protocol_Harmonytypes_V1_HarmonyMethodMetadata {
   /// the permission nodes required to invoke the method.
   var requiresPermissionNode: String = String()
 
+  /// whether the method requires owner
+  var requiresOwner: Bool = false
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+/// Anything holds anything
+struct Protocol_Harmonytypes_V1_Anything {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Kind is the kind of the message
+  var kind: String = String()
+
+  /// Body is the serialised bytes
+  var body: Data = Data()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Metadata type used by many messages.
 struct Protocol_Harmonytypes_V1_Metadata {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// Kind of this metadata.
   var kind: String = String()
 
-  var `extension`: Dictionary<String,SwiftProtobuf.Google_Protobuf_Any> = [:]
+  /// A map containing information.
+  var `extension`: Dictionary<String,Protocol_Harmonytypes_V1_Anything> = [:]
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+/// Error type that will be returned by servers. 
 struct Protocol_Harmonytypes_V1_Error {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// The identifier of this error, can be used as an i18n key.
   var identifier: String = String()
 
+  /// A (usually english) human message for this error.
   var humanMessage: String = String()
 
+  /// More details about this message. Is dependent on the endpoint.
   var moreDetails: Data = Data()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -94,112 +121,78 @@ struct Protocol_Harmonytypes_V1_Token {
   init() {}
 }
 
+/// An empty message
+struct Protocol_Harmonytypes_V1_Empty {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 /// An object representing an item position between two other items.
 struct Protocol_Harmonytypes_V1_ItemPosition {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var position: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position? = nil
+  /// The ID of the item the position is relative to
+  var itemID: UInt64 = 0
 
-  var top: Protocol_Harmonytypes_V1_ItemPosition.Top {
-    get {
-      if case .top(let v)? = position {return v}
-      return Protocol_Harmonytypes_V1_ItemPosition.Top()
-    }
-    set {position = .top(newValue)}
-  }
-
-  var between: Protocol_Harmonytypes_V1_ItemPosition.Between {
-    get {
-      if case .between(let v)? = position {return v}
-      return Protocol_Harmonytypes_V1_ItemPosition.Between()
-    }
-    set {position = .between(newValue)}
-  }
-
-  var bottom: Protocol_Harmonytypes_V1_ItemPosition.Bottom {
-    get {
-      if case .bottom(let v)? = position {return v}
-      return Protocol_Harmonytypes_V1_ItemPosition.Bottom()
-    }
-    set {position = .bottom(newValue)}
-  }
+  /// Whether the position is before or after the given ID
+  var position: Protocol_Harmonytypes_V1_ItemPosition.Position = .beforeUnspecified
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  enum OneOf_Position: Equatable {
-    case top(Protocol_Harmonytypes_V1_ItemPosition.Top)
-    case between(Protocol_Harmonytypes_V1_ItemPosition.Between)
-    case bottom(Protocol_Harmonytypes_V1_ItemPosition.Bottom)
+  /// The position
+  enum Position: SwiftProtobuf.Enum {
+    typealias RawValue = Int
 
-  #if !swift(>=4.1)
-    static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position, rhs: Protocol_Harmonytypes_V1_ItemPosition.OneOf_Position) -> Bool {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch (lhs, rhs) {
-      case (.top, .top): return {
-        guard case .top(let l) = lhs, case .top(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.between, .between): return {
-        guard case .between(let l) = lhs, case .between(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      case (.bottom, .bottom): return {
-        guard case .bottom(let l) = lhs, case .bottom(let r) = rhs else { preconditionFailure() }
-        return l == r
-      }()
-      default: return false
+    /// The position is before the item
+    case beforeUnspecified // = 0
+
+    /// The position is after the item
+    case after // = 1
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .beforeUnspecified
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .beforeUnspecified
+      case 1: self = .after
+      default: self = .UNRECOGNIZED(rawValue)
       }
     }
-  #endif
-  }
 
-  /// An object that represents the top of an ordered list.
-  struct Top {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
+    var rawValue: Int {
+      switch self {
+      case .beforeUnspecified: return 0
+      case .after: return 1
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
 
-    var nextID: UInt64 = 0
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
-  /// An object that represents a place between two items in an ordered list.
-  struct Between {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var previousID: UInt64 = 0
-
-    var nextID: UInt64 = 0
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
-  /// An object that represents the bottom of an ordered list.
-  struct Bottom {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var previousID: UInt64 = 0
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
   }
 
   init() {}
 }
+
+#if swift(>=4.2)
+
+extension Protocol_Harmonytypes_V1_ItemPosition.Position: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [Protocol_Harmonytypes_V1_ItemPosition.Position] = [
+    .beforeUnspecified,
+    .after,
+  ]
+}
+
+#endif  // swift(>=4.2)
 
 // MARK: - Extension support defined in types.proto.
 
@@ -212,6 +205,7 @@ struct Protocol_Harmonytypes_V1_ItemPosition {
 
 extension SwiftProtobuf.Google_Protobuf_MethodOptions {
 
+  /// Harmony method metadata.
   var Protocol_Harmonytypes_V1_metadata: Protocol_Harmonytypes_V1_HarmonyMethodMetadata {
     get {return getExtensionValue(ext: Protocol_Harmonytypes_V1_Extensions_metadata) ?? Protocol_Harmonytypes_V1_HarmonyMethodMetadata()}
     set {setExtensionValue(ext: Protocol_Harmonytypes_V1_Extensions_metadata, value: newValue)}
@@ -243,6 +237,7 @@ let Protocol_Harmonytypes_V1_Types_Extensions: SwiftProtobuf.SimpleExtensionMap 
 // constructing a `SimpleExtensionMap`, otherwise, use the above _Extension Properties_
 // accessors for the extension fields on the messages directly.
 
+/// Harmony method metadata.
 let Protocol_Harmonytypes_V1_Extensions_metadata = SwiftProtobuf.MessageExtension<SwiftProtobuf.OptionalMessageExtensionField<Protocol_Harmonytypes_V1_HarmonyMethodMetadata>, SwiftProtobuf.Google_Protobuf_MethodOptions>(
   _protobuf_fieldNumber: 1091,
   fieldName: "protocol.harmonytypes.v1.metadata"
@@ -258,6 +253,7 @@ extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message,
     1: .standard(proto: "requires_authentication"),
     2: .standard(proto: "requires_local"),
     3: .standard(proto: "requires_permission_node"),
+    4: .standard(proto: "requires_owner"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -269,6 +265,7 @@ extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message,
       case 1: try { try decoder.decodeSingularBoolField(value: &self.requiresAuthentication) }()
       case 2: try { try decoder.decodeSingularBoolField(value: &self.requiresLocal) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.requiresPermissionNode) }()
+      case 4: try { try decoder.decodeSingularBoolField(value: &self.requiresOwner) }()
       default: break
       }
     }
@@ -284,6 +281,9 @@ extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message,
     if !self.requiresPermissionNode.isEmpty {
       try visitor.visitSingularStringField(value: self.requiresPermissionNode, fieldNumber: 3)
     }
+    if self.requiresOwner != false {
+      try visitor.visitSingularBoolField(value: self.requiresOwner, fieldNumber: 4)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -291,6 +291,45 @@ extension Protocol_Harmonytypes_V1_HarmonyMethodMetadata: SwiftProtobuf.Message,
     if lhs.requiresAuthentication != rhs.requiresAuthentication {return false}
     if lhs.requiresLocal != rhs.requiresLocal {return false}
     if lhs.requiresPermissionNode != rhs.requiresPermissionNode {return false}
+    if lhs.requiresOwner != rhs.requiresOwner {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Protocol_Harmonytypes_V1_Anything: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Anything"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "kind"),
+    2: .same(proto: "body"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.kind) }()
+      case 2: try { try decoder.decodeSingularBytesField(value: &self.body) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.kind.isEmpty {
+      try visitor.visitSingularStringField(value: self.kind, fieldNumber: 1)
+    }
+    if !self.body.isEmpty {
+      try visitor.visitSingularBytesField(value: self.body, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_Anything, rhs: Protocol_Harmonytypes_V1_Anything) -> Bool {
+    if lhs.kind != rhs.kind {return false}
+    if lhs.body != rhs.body {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -310,7 +349,7 @@ extension Protocol_Harmonytypes_V1_Metadata: SwiftProtobuf.Message, SwiftProtobu
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.kind) }()
-      case 2: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.Google_Protobuf_Any>.self, value: &self.`extension`) }()
+      case 2: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,Protocol_Harmonytypes_V1_Anything>.self, value: &self.`extension`) }()
       default: break
       }
     }
@@ -321,7 +360,7 @@ extension Protocol_Harmonytypes_V1_Metadata: SwiftProtobuf.Message, SwiftProtobu
       try visitor.visitSingularStringField(value: self.kind, fieldNumber: 1)
     }
     if !self.`extension`.isEmpty {
-      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.Google_Protobuf_Any>.self, value: self.`extension`, fieldNumber: 2)
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,Protocol_Harmonytypes_V1_Anything>.self, value: self.`extension`, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -416,12 +455,30 @@ extension Protocol_Harmonytypes_V1_Token: SwiftProtobuf.Message, SwiftProtobuf._
   }
 }
 
+extension Protocol_Harmonytypes_V1_Empty: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Empty"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Protocol_Harmonytypes_V1_Empty, rhs: Protocol_Harmonytypes_V1_Empty) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Protocol_Harmonytypes_V1_ItemPosition: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".ItemPosition"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "top"),
-    2: .same(proto: "between"),
-    3: .same(proto: "bottom"),
+    1: .standard(proto: "item_id"),
+    2: .same(proto: "position"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -430,177 +487,34 @@ extension Protocol_Harmonytypes_V1_ItemPosition: SwiftProtobuf.Message, SwiftPro
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try {
-        var v: Protocol_Harmonytypes_V1_ItemPosition.Top?
-        var hadOneofValue = false
-        if let current = self.position {
-          hadOneofValue = true
-          if case .top(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.position = .top(v)
-        }
-      }()
-      case 2: try {
-        var v: Protocol_Harmonytypes_V1_ItemPosition.Between?
-        var hadOneofValue = false
-        if let current = self.position {
-          hadOneofValue = true
-          if case .between(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.position = .between(v)
-        }
-      }()
-      case 3: try {
-        var v: Protocol_Harmonytypes_V1_ItemPosition.Bottom?
-        var hadOneofValue = false
-        if let current = self.position {
-          hadOneofValue = true
-          if case .bottom(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.position = .bottom(v)
-        }
-      }()
+      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.itemID) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.position) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every case branch when no optimizations are
-    // enabled. https://github.com/apple/swift-protobuf/issues/1034
-    switch self.position {
-    case .top?: try {
-      guard case .top(let v)? = self.position else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    }()
-    case .between?: try {
-      guard case .between(let v)? = self.position else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }()
-    case .bottom?: try {
-      guard case .bottom(let v)? = self.position else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }()
-    case nil: break
+    if self.itemID != 0 {
+      try visitor.visitSingularUInt64Field(value: self.itemID, fieldNumber: 1)
+    }
+    if self.position != .beforeUnspecified {
+      try visitor.visitSingularEnumField(value: self.position, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition, rhs: Protocol_Harmonytypes_V1_ItemPosition) -> Bool {
+    if lhs.itemID != rhs.itemID {return false}
     if lhs.position != rhs.position {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Protocol_Harmonytypes_V1_ItemPosition.Top: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Top"
+extension Protocol_Harmonytypes_V1_ItemPosition.Position: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "next_id"),
+    0: .same(proto: "POSITION_BEFORE_UNSPECIFIED"),
+    1: .same(proto: "POSITION_AFTER"),
   ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.nextID) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.nextID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.nextID, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Top, rhs: Protocol_Harmonytypes_V1_ItemPosition.Top) -> Bool {
-    if lhs.nextID != rhs.nextID {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_ItemPosition.Between: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Between"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "previous_id"),
-    2: .standard(proto: "next_id"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.previousID) }()
-      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.nextID) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.previousID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.previousID, fieldNumber: 1)
-    }
-    if self.nextID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.nextID, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Between, rhs: Protocol_Harmonytypes_V1_ItemPosition.Between) -> Bool {
-    if lhs.previousID != rhs.previousID {return false}
-    if lhs.nextID != rhs.nextID {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Protocol_Harmonytypes_V1_ItemPosition.Bottom: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Protocol_Harmonytypes_V1_ItemPosition.protoMessageName + ".Bottom"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "previous_id"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt64Field(value: &self.previousID) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.previousID != 0 {
-      try visitor.visitSingularUInt64Field(value: self.previousID, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Protocol_Harmonytypes_V1_ItemPosition.Bottom, rhs: Protocol_Harmonytypes_V1_ItemPosition.Bottom) -> Bool {
-    if lhs.previousID != rhs.previousID {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
 }

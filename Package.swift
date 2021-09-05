@@ -8,8 +8,9 @@ let package = Package(
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.50.0"),
+        .package(url: "https://github.com/vapor/fluent.git", from: "4.4.0"),
+        .package(url: "https://github.com/vapor/redis.git", from: "4.5.0"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0"),
         .package(name: "SwiftProtobuf", url: "https://github.com/apple/swift-protobuf.git", from: "1.6.0"),
     ],
@@ -21,6 +22,7 @@ let package = Package(
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "SwiftProtobuf", package: "SwiftProtobuf"),
+                .product(name: "Redis", package: "redis"),
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

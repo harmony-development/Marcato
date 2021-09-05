@@ -11,6 +11,10 @@ public func configure(_ app: Application) throws {
 
     // app.migrations.add(CreateTodo())
 
+    app.migrations.add(CreateUser())
+    app.migrations.add(CreateLocalUser())
+    app.migrations.add(CreateForeignUser())
+
     // register routes
     routes(app)
 }

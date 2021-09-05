@@ -1,6 +1,8 @@
 import Vapor
 import SwiftProtobuf
 import Foundation
+import Redis
+import NIOFoundationCompat
 
 extension ByteBuffer {
     public func allData() -> Data {
@@ -20,22 +22,16 @@ extension Request {
 }
 
 extension SwiftProtobuf.Message {
-    fileprivate func toHTTPResponse(json: Bool = false) throws -> Response {
+    fileprivate func toHTTPResponse() throws -> Response {
         let http = Response(status: .ok)
-
-        if json {
-            http.headers.contentType = .json
-            http.body = .init(string: try jsonString())
-        } else {
-            http.headers.contentType = .init(type: "application", subType: "protobuf")
-            http.body = .init(data: try serializedData())
-        }
+        http.headers.add(name: "Hrpc-Version", value: "1")
+        http.headers.contentType = .init(type: "application", subType: "hrpc")
+        http.body = .init(data: try serializedData())
         return http
     }
 
     public func toResponse(on req: Request) throws -> Response {
-        let json = req.headers.accept.contains(where: { $0.mediaType == .json })
-        let response = try toHTTPResponse(json: json)
+        let response = try toHTTPResponse()
         return response
     }
 }
@@ -44,5 +40,28 @@ extension EventLoopFuture {
     public func toResponse<M>(_ type: M.Type = M.self, on req: Request) -> EventLoopFuture<Response> where Value : SwiftProtobuf.Message {
         return self.flatMapThrowing { try $0.toResponse(on: req) }
 
+    }
+}
+
+struct RedisMessage<T: SwiftProtobuf.Message>: RESPValueConvertible {
+    let msg: T
+
+    init(_ step: T) {
+        msg = step
+    }
+    init?(fromRESP value: RESPValue) {
+        guard let bb = value.byteBuffer else {
+            return nil
+        }
+
+        guard let m = try? T(serializedData: bb.allData()) else {
+            return nil
+        }
+
+        msg = m
+    }
+
+    func convertedToRESPValue() -> RESPValue {
+        .bulkString(ByteBuffer(data: try! msg.serializedData()))
     }
 }
